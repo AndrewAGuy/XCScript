@@ -4,7 +4,7 @@
     /// For properties that take IPlugin inheriting types
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class PropertyPlugin<T> : PropertyBase<T>, IProperty where T : IPlugin
+    public class PluginProperty<T> : PropertyBase<T>, IProperty where T : IPlugin
     {
         /// <summary>
         /// 
@@ -12,7 +12,7 @@
         /// <param name="n"></param>
         /// <param name="d"></param>
         /// <param name="v"></param>
-        public PropertyPlugin(string n, string d, T v) : base(n, d)
+        public PluginProperty(string n, string d, T v) : base(n, d)
         {
             value = v;
         }

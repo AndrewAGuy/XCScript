@@ -5,7 +5,7 @@ namespace XCScript.Plugins.Interaction
     /// <summary>
     /// Paths to files and directories
     /// </summary>
-    public class PropertyPath : PropertyBase<string>, IProperty
+    public class PathProperty : PropertyBase<string>, IProperty
     {
         /// <summary>
         /// 
@@ -13,7 +13,7 @@ namespace XCScript.Plugins.Interaction
         /// <param name="n"></param>
         /// <param name="d"></param>
         /// <param name="v"></param>
-        public PropertyPath(string n, string d, string v) : base(n, d)
+        public PathProperty(string n, string d, string v) : base(n, d)
         {
             TrySetValue(v);
         }

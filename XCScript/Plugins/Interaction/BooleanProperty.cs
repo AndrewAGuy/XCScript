@@ -9,7 +9,7 @@ namespace XCScript.Plugins.Interaction
     /// <summary>
     /// Boolean values
     /// </summary>
-    public class PropertyBoolean : PropertyBase<bool>, IProperty
+    public class BooleanProperty : PropertyBase<bool>, IProperty
     {
         /// <summary>
         /// Constructs with initial state
@@ -17,7 +17,7 @@ namespace XCScript.Plugins.Interaction
         /// <param name="n"></param>
         /// <param name="d"></param>
         /// <param name="v"></param>
-        public PropertyBoolean(string n, string d, bool v) : base(n, d)
+        public BooleanProperty(string n, string d, bool v) : base(n, d)
         {
             value = v;
         }

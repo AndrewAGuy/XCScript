@@ -3,9 +3,9 @@
     /// <summary>
     /// 
     /// </summary>
-    public class PropertyDouble : PropertyBase<double>, IProperty
+    public class IntegerProperty : PropertyBase<int>, IProperty
     {
-        private bool positive;
+        bool positive;
 
         /// <summary>
         /// 
@@ -13,8 +13,8 @@
         /// <param name="n"></param>
         /// <param name="d"></param>
         /// <param name="v"></param>
-        /// <param name="p">Constrain to be positive</param>
-        public PropertyDouble(string n, string d, double v, bool p = false) : base(n, d)
+        /// <param name="p">Constrain to positive</param>
+        public IntegerProperty(string n, string d, int v, bool p = false) : base(n, d)
         {
             positive = p;
             if (!Set(v).Success)
@@ -30,22 +30,22 @@
         {
             get
             {
-                return "Double";
+                return "Integer";
             }
         }
 
-        private Result Set(double d)
+        private Result Set(int i)
         {
-            if (positive && d < 0)
+            if (positive && i < 0)
             {
                 return new Result(false, "Value must be positive");
             }
-            value = d;
+            value = i;
             return new Result();
         }
 
         /// <summary>
-        /// 
+        /// For doubles, performs default conversion
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
@@ -54,12 +54,12 @@
             switch (o)
             {
                 case double d:
-                    return Set(d);
+                    return Set((int)d);
                 case int i:
                     return Set(i);
                 default:
                     var s = o.ToString();
-                    return double.TryParse(s, out var v) ? Set(v) : new Result(false, "Can not make double from: " + s);
+                    return int.TryParse(s, out var v) ? Set(v) : new Result(false, "Can not make double from: " + s);
             }
         }
     }

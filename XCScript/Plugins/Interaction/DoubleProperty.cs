@@ -1,12 +1,11 @@
 ﻿namespace XCScript.Plugins.Interaction
 {
     /// <summary>
-    /// Double, clamped between two values
+    /// 
     /// </summary>
-    public class PropertyRangedDouble : PropertyBase<double>, IProperty
+    public class DoubleProperty : PropertyBase<double>, IProperty
     {
-        private double max;
-        private double min;
+        private bool positive;
 
         /// <summary>
         /// 
@@ -14,13 +13,14 @@
         /// <param name="n"></param>
         /// <param name="d"></param>
         /// <param name="v"></param>
-        /// <param name="lo"></param>
-        /// <param name="hi"></param>
-        public PropertyRangedDouble(string n, string d, double v, double lo, double hi) : base(n, d)
+        /// <param name="p">Constrain to be positive</param>
+        public DoubleProperty(string n, string d, double v, bool p = false) : base(n, d)
         {
-            max = hi;
-            min = lo;
-            value = v > max ? max : v < min ? min : v;
+            positive = p;
+            if (!Set(v).Success)
+            {
+                value = 0;
+            }
         }
 
         /// <summary>
@@ -30,26 +30,15 @@
         {
             get
             {
-                return $"Clamped double: [{min},{max}]";
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public new object[] SuggestedValues
-        {
-            get
-            {
-                return new object[] { min, max };
+                return "Double";
             }
         }
 
         private Result Set(double d)
         {
-            if (d < min || d > max)
+            if (positive && d < 0)
             {
-                return new Result(false, "Value outside of range");
+                return new Result(false, "Value must be positive");
             }
             value = d;
             return new Result();

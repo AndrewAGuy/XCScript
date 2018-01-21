@@ -41,15 +41,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arguments\ArgumentList.cs" />
+    <Compile Include="Arguments\ArrayLiteral.cs" />
+    <Compile Include="Arguments\BooleanLiteral.cs" />
+    <Compile Include="Arguments\DictionaryLiteral.cs" />
+    <Compile Include="Arguments\DoubleLiteral.cs" />
+    <Compile Include="Arguments\IArgument.cs" />
+    <Compile Include="Arguments\IntegerLiteral.cs" />
+    <Compile Include="Arguments\NameArgument.cs" />
+    <Compile Include="Arguments\StringLiteral.cs" />
+    <Compile Include="Arguments\TypeNameLiteral.cs" />
     <Compile Include="Plugins\Interaction\IProperty.cs" />
     <Compile Include="Plugins\Interaction\PropertyBase.cs" />
-    <Compile Include="Plugins\Interaction\PropertyBoolean.cs" />
-    <Compile Include="Plugins\Interaction\PropertyDouble.cs" />
-    <Compile Include="Plugins\Interaction\PropertyInteger.cs" />
-    <Compile Include="Plugins\Interaction\PropertyPath.cs" />
-    <Compile Include="Plugins\Interaction\PropertyPlugin.cs" />
-    <Compile Include="Plugins\Interaction\PropertyRangedDouble.cs" />
-    <Compile Include="Plugins\Interaction\PropertyString.cs" />
+    <Compile Include="Plugins\Interaction\BooleanProperty.cs" />
+    <Compile Include="Plugins\Interaction\DoubleProperty.cs" />
+    <Compile Include="Plugins\Interaction\IntegerProperty.cs" />
+    <Compile Include="Plugins\Interaction\PathProperty.cs" />
+    <Compile Include="Plugins\Interaction\PluginProperty.cs" />
+    <Compile Include="Plugins\Interaction\ClampedDoubleProperty.cs" />
+    <Compile Include="Plugins\Interaction\StringProperty.cs" />
     <Compile Include="Plugins\IPlugin.cs" />
     <Compile Include="Plugins\Manager.cs" />
     <Compile Include="Plugins\PluginBase.cs" />

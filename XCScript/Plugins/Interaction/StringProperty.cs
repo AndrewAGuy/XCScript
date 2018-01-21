@@ -6,7 +6,7 @@ namespace XCScript.Plugins.Interaction
     /// <summary>
     /// 
     /// </summary>
-    public class PropertyString : PropertyBase<string>, IProperty
+    public class StringProperty : PropertyBase<string>, IProperty
     {
         private SortedSet<string> permitted = null;
 
@@ -17,7 +17,7 @@ namespace XCScript.Plugins.Interaction
         /// <param name="d">Description</param>
         /// <param name="v">Value</param>
         /// <param name="p">Permitted values</param>
-        public PropertyString(string n, string d, string v, IEnumerable<string> p = null) : base(n, d)
+        public StringProperty(string n, string d, string v, IEnumerable<string> p = null) : base(n, d)
         {
             if (p != null)
             {
