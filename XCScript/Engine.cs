@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using XCScript.Execution;
 using XCScript.Functions;
+using XCScript.Functions.Access;
+using XCScript.Functions.Control;
 using XCScript.Functions.Exceptions;
+using XCScript.Functions.Execution;
+using XCScript.Functions.Plugins;
 using XCScript.Parsing.Exceptions;
 using XCScript.Plugins;
 
@@ -57,13 +59,57 @@ namespace XCScript
         }
 
         /// <summary>
-        /// Default constructor
+        /// 
         /// </summary>
-        public Engine()
+        public Engine(LoadingOptions opt = null)
         {
             globals[FKey] = functions;
             globals[PKey] = plugins;
             globals[RKey] = result;
+            if (opt != null)
+            {
+                var funcs = new List<IFunction>();
+                if (opt.Access)
+                {
+                    funcs.AddRange(new IFunction[]
+                    {
+                        new Delete(),
+                        new Error(),
+                        new Index(),
+                        new Map()
+                    });
+                }
+                if (opt.Control)
+                {
+                    funcs.AddRange(new IFunction[] {
+                        new Do(),
+                        new If(),
+                        new Throw(),
+                        new Until(),
+                        new While()
+                    });
+                }
+                if (opt.Execution)
+                {
+                    funcs.AddRange(new IFunction[]
+                    {
+                        new Execute(),
+                        new Interpret()
+                    });
+                }
+                if (opt.Plugins)
+                {
+                    funcs.AddRange(new IFunction[] {
+                        new Alias(),
+                        new New(),
+                        new Property()
+                    });
+                }
+                foreach (var f in funcs)
+                {
+                    functions[f.Keyword] = f;
+                }
+            }
         }
 
         /// <summary>
