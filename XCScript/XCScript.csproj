@@ -46,11 +46,28 @@
     <Compile Include="Arguments\BooleanLiteral.cs" />
     <Compile Include="Arguments\DictionaryLiteral.cs" />
     <Compile Include="Arguments\DoubleLiteral.cs" />
+    <Compile Include="Arguments\ExecutableArgument.cs" />
+    <Compile Include="Arguments\FunctionArgument.cs" />
     <Compile Include="Arguments\IArgument.cs" />
     <Compile Include="Arguments\IntegerLiteral.cs" />
     <Compile Include="Arguments\NameArgument.cs" />
     <Compile Include="Arguments\StringLiteral.cs" />
     <Compile Include="Arguments\TypeNameLiteral.cs" />
+    <Compile Include="Functions\IFunction.cs" />
+    <Compile Include="Engine.cs" />
+    <Compile Include="Execution\Assignment.cs" />
+    <Compile Include="Execution\Copy.cs" />
+    <Compile Include="Execution\Executable.cs" />
+    <Compile Include="Execution\FunctionCall.cs" />
+    <Compile Include="Execution\IStatement.cs" />
+    <Compile Include="Parsing\Arguments.cs" />
+    <Compile Include="Parsing\Collections.cs" />
+    <Compile Include="Parsing\Evaluatable.cs" />
+    <Compile Include="Parsing\Exceptions\FinalCharacterException.cs" />
+    <Compile Include="Parsing\Exceptions\InvalidArgumentException.cs" />
+    <Compile Include="Parsing\Exceptions\InvalidCharacterException.cs" />
+    <Compile Include="Parsing\Literals.cs" />
+    <Compile Include="Parsing\Utility.cs" />
     <Compile Include="Plugins\Interaction\IProperty.cs" />
     <Compile Include="Plugins\Interaction\PropertyBase.cs" />
     <Compile Include="Plugins\Interaction\BooleanProperty.cs" />
@@ -66,5 +83,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Result.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

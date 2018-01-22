@@ -23,7 +23,7 @@ namespace XCScript
         public Result(bool b, string s)
         {
             this.Success = b;
-            this.Messages = new string[] { s };
+            this.Messages = new List<string> { s };
         }
 
         /// <summary>
@@ -34,6 +34,19 @@ namespace XCScript
         /// <summary>
         /// Info about the execution
         /// </summary>
-        public string[] Messages { get; set; } = null;
+        public List<string> Messages { get; set; } = new List<string>();
+
+        /// <summary>
+        /// Appends the messages and determines success. If fatal, failure is conserved, else success is conserved
+        /// </summary>
+        /// <param name="other"></param>
+        /// <param name="fatal"></param>
+        /// <returns></returns>
+        public Result Append(Result other, bool fatal = false)
+        {
+            this.Messages.AddRange(other.Messages);
+            this.Success = fatal ? this.Success && other.Success : this.Success || other.Success;
+            return this;
+        }
     }
 }
