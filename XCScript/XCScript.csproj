@@ -53,6 +53,8 @@
     <Compile Include="Arguments\NameArgument.cs" />
     <Compile Include="Arguments\StringLiteral.cs" />
     <Compile Include="Arguments\TypeNameLiteral.cs" />
+    <Compile Include="Functions\Exceptions\ArgumentCountException.cs" />
+    <Compile Include="Functions\Exceptions\ExecutionException.cs" />
     <Compile Include="Functions\IFunction.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Execution\Assignment.cs" />
@@ -66,6 +68,7 @@
     <Compile Include="Parsing\Exceptions\FinalCharacterException.cs" />
     <Compile Include="Parsing\Exceptions\InvalidArgumentException.cs" />
     <Compile Include="Parsing\Exceptions\InvalidCharacterException.cs" />
+    <Compile Include="Parsing\Exceptions\ParsingException.cs" />
     <Compile Include="Parsing\Literals.cs" />
     <Compile Include="Parsing\Utility.cs" />
     <Compile Include="Plugins\Interaction\IProperty.cs" />

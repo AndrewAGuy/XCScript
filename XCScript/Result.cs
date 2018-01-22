@@ -48,5 +48,14 @@ namespace XCScript
             this.Success = fatal ? this.Success && other.Success : this.Success || other.Success;
             return this;
         }
+
+        /// <summary>
+        /// Returns to original state
+        /// </summary>
+        public void Reset()
+        {
+            this.Success = true;
+            this.Messages.Clear();
+        }
     }
 }

@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using XCScript.Execution;
 using XCScript.Functions;
+using XCScript.Functions.Exceptions;
+using XCScript.Parsing.Exceptions;
 using XCScript.Plugins;
 
 namespace XCScript
@@ -18,6 +20,7 @@ namespace XCScript
     {
         private readonly Dictionary<string, object> globals = new Dictionary<string, object>();
         private readonly Dictionary<string, IFunction> functions = new Dictionary<string, IFunction>();
+        private readonly Result result = new Result();
         private readonly Manager plugins = new Manager();
 
         /// <summary>
@@ -27,6 +30,7 @@ namespace XCScript
         {
             globals["/f"] = functions;
             globals["/p"] = plugins;
+            globals["/r"] = result;
         }
 
         /// <summary>
@@ -48,6 +52,17 @@ namespace XCScript
             get
             {
                 return functions;
+            }
+        }
+
+        /// <summary>
+        /// Execution result. Stored in <see cref="Globals"/> as /r
+        /// </summary>
+        public Result Result
+        {
+            get
+            {
+                return result;
             }
         }
 
@@ -97,14 +112,39 @@ namespace XCScript
         /// <returns></returns>
         public Executable Interpret(TextReader reader)
         {
-            var exec = Parsing.Evaluatable.Parse(reader, this.Functions);
+            var exec = Parsing.Evaluatable.Parse(reader, functions);
             reader.Dispose();
             return exec;
         }
 
-        public void Execute(TextReader reader)
+        /// <summary>
+        /// Interprets and executes the given text source, evaluating and resetting the global results
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        public Result Execute(TextReader reader)
         {
-            Interpret(reader).Execute(this.Globals);
+            try
+            {
+                Interpret(reader).Execute(globals);
+                // Get warnings
+                var res = new Result().Append(result);
+                result.Reset();
+                return res;
+            }
+            catch (ParsingException p)
+            {
+                // No execution to worry about
+                return new Result(false, $"Caught parsing exception ({p.GetType().Name}): {p.Message}");
+            }
+            catch (ExecutionException e)
+            {
+                // Get execution warnings, then error
+                var res = new Result().Append(result);
+                res.Append(new Result(false, $"Caught execution exception ({e.GetType().Name}): {e.Message}"), true);
+                result.Reset();
+                return res;
+            }
         }
 
         /// <summary>

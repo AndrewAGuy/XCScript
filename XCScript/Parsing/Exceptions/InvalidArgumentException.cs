@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace XCScript.Parsing.Exceptions
+﻿namespace XCScript.Parsing.Exceptions
 {
-    internal class InvalidArgumentException : Exception
+    internal class InvalidArgumentException : ParsingException
     {
         public InvalidArgumentException(string message) : base(message)
         {

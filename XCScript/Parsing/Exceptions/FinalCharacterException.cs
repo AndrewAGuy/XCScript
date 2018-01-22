@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace XCScript.Parsing.Exceptions
+﻿namespace XCScript.Parsing.Exceptions
 {
-    internal class FinalCharacterException : Exception
+    internal class FinalCharacterException : ParsingException
     {
         public FinalCharacterException(string message) : base(message)
         {
