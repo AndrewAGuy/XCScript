@@ -53,7 +53,17 @@
     <Compile Include="Arguments\NameArgument.cs" />
     <Compile Include="Arguments\StringLiteral.cs" />
     <Compile Include="Arguments\TypeNameLiteral.cs" />
+    <Compile Include="Functions\Access\Delete.cs" />
+    <Compile Include="Functions\Access\Error.cs" />
+    <Compile Include="Functions\Access\Index.cs" />
+    <Compile Include="Functions\Access\Map.cs" />
+    <Compile Include="Functions\Control\Do.cs" />
+    <Compile Include="Functions\Control\If.cs" />
+    <Compile Include="Functions\Control\Throw.cs" />
+    <Compile Include="Functions\Control\Until.cs" />
+    <Compile Include="Functions\Control\While.cs" />
     <Compile Include="Functions\Exceptions\ArgumentCountException.cs" />
+    <Compile Include="Functions\Exceptions\ArgumentTypeException.cs" />
     <Compile Include="Functions\Exceptions\ExecutionException.cs" />
     <Compile Include="Functions\IFunction.cs" />
     <Compile Include="Engine.cs" />
@@ -62,6 +72,7 @@
     <Compile Include="Execution\Executable.cs" />
     <Compile Include="Execution\FunctionCall.cs" />
     <Compile Include="Execution\IStatement.cs" />
+    <Compile Include="Functions\LoadingOptions.cs" />
     <Compile Include="Parsing\Arguments.cs" />
     <Compile Include="Parsing\Collections.cs" />
     <Compile Include="Parsing\Evaluatable.cs" />

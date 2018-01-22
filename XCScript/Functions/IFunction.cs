@@ -20,11 +20,5 @@ namespace XCScript.Functions
         /// The keyword that will be used in <see cref="Engine.Functions"/>
         /// </summary>
         string Keyword { get; }
-
-        /// <summary>
-        /// Allows the function to initialise itself, by getting and setting context elements
-        /// </summary>
-        /// <param name="context"></param>
-        void Initialise(Dictionary<string, object> context);
     }
 }

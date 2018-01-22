@@ -24,13 +24,46 @@ namespace XCScript
         private readonly Manager plugins = new Manager();
 
         /// <summary>
+        /// Key for <see cref="Functions"/> in <see cref="Globals"/>
+        /// </summary>
+        public static string FKey
+        {
+            get
+            {
+                return "/f";
+            }
+        }
+
+        /// <summary>
+        /// Key for <see cref="Result"/> in <see cref="Globals"/>
+        /// </summary>
+        public static string RKey
+        {
+            get
+            {
+                return "/r";
+            }
+        }
+
+        /// <summary>
+        /// Key for <see cref="Plugins"/> in <see cref="Globals"/>
+        /// </summary>
+        public static string PKey
+        {
+            get
+            {
+                return "/p";
+            }
+        }
+
+        /// <summary>
         /// Default constructor
         /// </summary>
         public Engine()
         {
-            globals["/f"] = functions;
-            globals["/p"] = plugins;
-            globals["/r"] = result;
+            globals[FKey] = functions;
+            globals[PKey] = plugins;
+            globals[RKey] = result;
         }
 
         /// <summary>
@@ -89,7 +122,6 @@ namespace XCScript
                     if (!functions.ContainsKey(inst.Keyword))
                     {
                         functions[inst.Keyword] = inst;
-                        inst.Initialise(globals);
                     }
                     else
                     {
