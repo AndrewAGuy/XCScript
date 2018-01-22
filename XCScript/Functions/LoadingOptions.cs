@@ -18,7 +18,7 @@
         /// <summary>
         /// Interpretation and execution in global state: {interp,exec}
         /// </summary>
-        public bool Interpret { get; set; } = true;
+        public bool Execution { get; set; } = true;
 
         /// <summary>
         /// Plugin interaction: {new,prop,alias}

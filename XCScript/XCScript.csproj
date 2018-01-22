@@ -65,6 +65,8 @@
     <Compile Include="Functions\Exceptions\ArgumentCountException.cs" />
     <Compile Include="Functions\Exceptions\ArgumentTypeException.cs" />
     <Compile Include="Functions\Exceptions\ExecutionException.cs" />
+    <Compile Include="Functions\Execution\Execute.cs" />
+    <Compile Include="Functions\Execution\Interpret.cs" />
     <Compile Include="Functions\IFunction.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Execution\Assignment.cs" />
