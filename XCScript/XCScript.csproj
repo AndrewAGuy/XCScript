@@ -75,6 +75,9 @@
     <Compile Include="Execution\FunctionCall.cs" />
     <Compile Include="Execution\IStatement.cs" />
     <Compile Include="Functions\LoadingOptions.cs" />
+    <Compile Include="Functions\Plugins\Alias.cs" />
+    <Compile Include="Functions\Plugins\New.cs" />
+    <Compile Include="Functions\Plugins\Property.cs" />
     <Compile Include="Parsing\Arguments.cs" />
     <Compile Include="Parsing\Collections.cs" />
     <Compile Include="Parsing\Evaluatable.cs" />
