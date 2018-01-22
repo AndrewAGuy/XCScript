@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using XCScript.Arguments;
-using XCScript.Commands;
+using XCScript.Functions;
 
 namespace XCScript.Execution
 {
