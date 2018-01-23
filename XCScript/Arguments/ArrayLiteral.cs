@@ -7,6 +7,14 @@ namespace XCScript.Arguments
     {
         private readonly List<IArgument> args = new List<IArgument>();
 
+        public object Literal
+        {
+            get
+            {
+                return args;
+            }
+        }
+
         public void Add(IArgument arg)
         {
             args.Add(arg);

@@ -12,6 +12,14 @@ namespace XCScript.Arguments
             args[key] = value;
         }
 
+        public object Literal
+        {
+            get
+            {
+                return args;
+            }
+        }
+
         public object Evaluate(Dictionary<string, object> globals)
         {
             return args;

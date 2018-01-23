@@ -7,6 +7,14 @@ namespace XCScript.Arguments
     {
         public string Value { get; set; }
 
+        public object Literal
+        {
+            get
+            {
+                return this.Value;
+            }
+        }
+
         public object Evaluate(Dictionary<string, object> globals)
         {
             return this.Value;

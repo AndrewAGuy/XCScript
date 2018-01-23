@@ -8,6 +8,14 @@ namespace XCScript.Arguments
     {
         public Executable Value { get; private set; } = new Executable();
 
+        public object Literal
+        {
+            get
+            {
+                return this.Value;
+            }
+        }
+
         public object Evaluate(Dictionary<string, object> globals)
         {
             this.Value.Execute(globals);

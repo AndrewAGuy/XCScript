@@ -13,5 +13,10 @@ namespace XCScript.Arguments
         /// <param name="globals"></param>
         /// <returns></returns>
         object Evaluate(Dictionary<string, object> globals);
+
+        /// <summary>
+        /// Gets the stored object without evaluation
+        /// </summary>
+        object Literal { get; }
     }
 }
