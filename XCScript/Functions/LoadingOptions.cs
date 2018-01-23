@@ -24,5 +24,10 @@
         /// Plugin interaction: {new,prop,alias}
         /// </summary>
         public bool Plugins { get; set; } = true;
+
+        /// <summary>
+        /// Arithmetic and comparison, converted to doubles
+        /// </summary>
+        public bool Numeric { get; set; } = true;
     }
 }

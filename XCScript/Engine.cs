@@ -9,6 +9,7 @@ using XCScript.Functions.Access;
 using XCScript.Functions.Control;
 using XCScript.Functions.Exceptions;
 using XCScript.Functions.Execution;
+using XCScript.Functions.Numeric;
 using XCScript.Functions.Plugins;
 using XCScript.Parsing.Exceptions;
 using XCScript.Plugins;
@@ -103,6 +104,21 @@ namespace XCScript
                         new Alias(),
                         new New(),
                         new Property()
+                    });
+                }
+                if (opt.Numeric)
+                {
+                    funcs.AddRange(new IFunction[] {
+                        new Add(),
+                        new Divide(),
+                        new Equal(),
+                        new Greater(),
+                        new GreaterEqual(),
+                        new Less(),
+                        new LessEqual(),
+                        new Multiply(),
+                        new NotEqual(),
+                        new Subtract()
                     });
                 }
                 foreach (var f in funcs)

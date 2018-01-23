@@ -76,6 +76,17 @@
     <Compile Include="Execution\FunctionCall.cs" />
     <Compile Include="Execution\IStatement.cs" />
     <Compile Include="Functions\LoadingOptions.cs" />
+    <Compile Include="Functions\Numeric\Add.cs" />
+    <Compile Include="Functions\Numeric\Base.cs" />
+    <Compile Include="Functions\Numeric\Divide.cs" />
+    <Compile Include="Functions\Numeric\Equal.cs" />
+    <Compile Include="Functions\Numeric\Greater.cs" />
+    <Compile Include="Functions\Numeric\GreaterEqual.cs" />
+    <Compile Include="Functions\Numeric\Less.cs" />
+    <Compile Include="Functions\Numeric\LessEqual.cs" />
+    <Compile Include="Functions\Numeric\Multiply.cs" />
+    <Compile Include="Functions\Numeric\NotEqual.cs" />
+    <Compile Include="Functions\Numeric\Subtract.cs" />
     <Compile Include="Functions\Plugins\Alias.cs" />
     <Compile Include="Functions\Plugins\New.cs" />
     <Compile Include="Functions\Plugins\Property.cs" />
