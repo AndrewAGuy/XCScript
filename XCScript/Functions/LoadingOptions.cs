@@ -29,5 +29,10 @@
         /// Arithmetic and comparison, converted to doubles
         /// </summary>
         public bool Numeric { get; set; } = true;
+
+        /// <summary>
+        /// Logical operators
+        /// </summary>
+        public bool Logical { get; set; } = true;
     }
 }

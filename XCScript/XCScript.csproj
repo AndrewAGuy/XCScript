@@ -76,6 +76,14 @@
     <Compile Include="Execution\FunctionCall.cs" />
     <Compile Include="Execution\IStatement.cs" />
     <Compile Include="Functions\LoadingOptions.cs" />
+    <Compile Include="Functions\Logical\And.cs" />
+    <Compile Include="Functions\Logical\Base.cs" />
+    <Compile Include="Functions\Logical\Nand.cs" />
+    <Compile Include="Functions\Logical\Nor.cs" />
+    <Compile Include="Functions\Logical\Not.cs" />
+    <Compile Include="Functions\Logical\Or.cs" />
+    <Compile Include="Functions\Logical\Xnor.cs" />
+    <Compile Include="Functions\Logical\Xor.cs" />
     <Compile Include="Functions\Numeric\Add.cs" />
     <Compile Include="Functions\Numeric\Base.cs" />
     <Compile Include="Functions\Numeric\Divide.cs" />

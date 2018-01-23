@@ -9,6 +9,7 @@ using XCScript.Functions.Access;
 using XCScript.Functions.Control;
 using XCScript.Functions.Exceptions;
 using XCScript.Functions.Execution;
+using XCScript.Functions.Logical;
 using XCScript.Functions.Numeric;
 using XCScript.Functions.Plugins;
 using XCScript.Parsing.Exceptions;
@@ -82,7 +83,8 @@ namespace XCScript
                 }
                 if (opt.Control)
                 {
-                    funcs.AddRange(new IFunction[] {
+                    funcs.AddRange(new IFunction[]
+                    {
                         new Do(),
                         new If(),
                         new Throw(),
@@ -100,7 +102,8 @@ namespace XCScript
                 }
                 if (opt.Plugins)
                 {
-                    funcs.AddRange(new IFunction[] {
+                    funcs.AddRange(new IFunction[] 
+                    {
                         new Alias(),
                         new New(),
                         new Property()
@@ -108,7 +111,8 @@ namespace XCScript
                 }
                 if (opt.Numeric)
                 {
-                    funcs.AddRange(new IFunction[] {
+                    funcs.AddRange(new IFunction[] 
+                    {
                         new Add(),
                         new Divide(),
                         new Equal(),
@@ -119,6 +123,19 @@ namespace XCScript
                         new Multiply(),
                         new NotEqual(),
                         new Subtract()
+                    });
+                }
+                if (opt.Logical)
+                {
+                    funcs.AddRange(new IFunction[]
+                    {
+                        new And(),
+                        new Nand(),
+                        new Nor(),
+                        new Not(),
+                        new Or(),
+                        new Xnor(),
+                        new Xor()
                     });
                 }
                 foreach (var f in funcs)
