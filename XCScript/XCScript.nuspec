@@ -7,7 +7,7 @@
     <authors>Andrew Guy</authors>
     <owners>aguy</owners>
     <licenseUrl>https://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-    <!--projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl-->
+    <projectUrl>https://github.com/AndrewAGuy/XCScript</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Extensible command-driven scripting and property-based plugin management, on which CLI apps can be built.</description>
     <releaseNotes>Initial build.</releaseNotes>
