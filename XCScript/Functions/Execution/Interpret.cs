@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using XCScript.Arguments;
+using XCScript.Execution;
 using XCScript.Functions.Exceptions;
 using XCScript.Parsing.Exceptions;
 
@@ -29,9 +30,9 @@ namespace XCScript.Functions.Execution
                 res.Messages.Add($"'interp' called with {arguments.Length} arguments, only first will be used");
             }
 
-            if (arguments[0] is ExecutableArgument e)
+            if (arguments[0].Literal is Executable e)
             {
-                return e.Value;
+                return e;
             }
             else if (arguments[0].Evaluate(globals) is string s)
             {
