@@ -124,7 +124,7 @@ namespace XCScript
         }
 
         /// <summary>
-        /// Loaded functions. Stored in <see cref="Globals"/> as /f
+        /// Loaded functions. Stored in <see cref="Globals"/> as <see cref="FKey"/>
         /// </summary>
         public Dictionary<string, IFunction> Functions
         {
@@ -135,7 +135,7 @@ namespace XCScript
         }
 
         /// <summary>
-        /// Execution result. Stored in <see cref="Globals"/> as /r
+        /// Execution result. Stored in <see cref="Globals"/> as <see cref="RKey"/>
         /// </summary>
         public Result Result
         {
@@ -146,7 +146,7 @@ namespace XCScript
         }
 
         /// <summary>
-        /// Plugin type manager. Stored in <see cref="Globals"/> as /p
+        /// Plugin type manager. Stored in <see cref="Globals"/> as <see cref="PKey"/>
         /// </summary>
         public Manager Plugins
         {

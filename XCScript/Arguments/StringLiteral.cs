@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace XCScript.Arguments
 {
@@ -23,21 +24,7 @@ namespace XCScript.Arguments
         public override string ToString()
         {
             var str = new StringBuilder().Append('"');
-            for (var i = 0; i < this.Value.Length; ++i)
-            {
-                if (this.Value[i] == '"')
-                {
-                    str.Append("\\\"");
-                }
-                else if (this.Value[i] == '\\')
-                {
-                    str.Append("\\\\");
-                }
-                else
-                {
-                    str.Append(this.Value[i]);
-                }
-            }
+            str.Append(Regex.Escape(this.Value));
             return str.Append('"').ToString();
         }
     }

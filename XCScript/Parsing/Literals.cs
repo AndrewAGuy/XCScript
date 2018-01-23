@@ -3,6 +3,7 @@ using XCScript.Parsing.Exceptions;
 using System;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace XCScript.Parsing
 {
@@ -53,6 +54,7 @@ namespace XCScript.Parsing
             {
                 if (chr == '\\')
                 {
+                    str.Append(chr);
                     if (!Utility.Advance(reader, out chr))
                     {
                         throw new FinalCharacterException("Expected escaped character after '\\'");
@@ -65,7 +67,7 @@ namespace XCScript.Parsing
                     Utility.Advance(reader, out chr);
                     return new StringLiteral()
                     {
-                        Value = str.ToString()
+                        Value = Regex.Unescape(str.ToString())
                     };
                 }
                 else
