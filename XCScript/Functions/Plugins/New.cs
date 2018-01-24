@@ -27,7 +27,7 @@ namespace XCScript.Functions.Plugins
                 res.Messages.Add($"'new' called with {arguments.Length} arguments, only first 2 will be used");
             }
 
-            var typename = arguments[0].Literal as string ?? arguments[0].Evaluate(globals) as string;
+            var typename = arguments[0].Evaluate(globals) as string;
             if (typename == null)
             {
                 throw new ArgumentTypeException("First argument to 'new' must be or evaluate to string");
