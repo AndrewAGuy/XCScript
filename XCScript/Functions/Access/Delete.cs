@@ -17,21 +17,16 @@ namespace XCScript.Functions.Access
         {
             foreach (var arg in array)
             {
-                if (arg.Literal is string str)
+                // To remove an object with the name xyz, call del:/xyz
+                // Otherwise it tries to get a string pointed stored as
+                switch (arg.Evaluate(globals))
                 {
-                    globals.Remove(str);
-                }
-                else
-                {
-                    switch (arg.Evaluate(globals))
-                    {
-                        case string s:
-                            globals.Remove(s);
-                            break;
-                        case IArgument[] a:
-                            DeleteArray(a, globals);
-                            break;
-                    }
+                    case string s:
+                        globals.Remove(s);
+                        break;
+                    case IArgument[] a:
+                        DeleteArray(a, globals);
+                        break;
                 }
             }
         }
