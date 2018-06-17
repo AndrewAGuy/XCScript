@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using XCScript.Arguments;
+using XCScript.Functions.Exceptions;
 
 namespace XCScript.Functions.Numeric
 {
@@ -15,8 +16,14 @@ namespace XCScript.Functions.Numeric
 
         public object Execute(IArgument[] arguments, Dictionary<string, object> globals)
         {
-            var tup = Base.Get(arguments, globals);
-            return tup.Item1 / tup.Item2;
+            return Base.Evaluate(arguments, globals, (a, b) =>
+            {
+                if (b == 0.0)
+                {
+                    throw new ExecutionException("Division by 0");
+                }
+                return a / b;
+            });
         }
     }
 }

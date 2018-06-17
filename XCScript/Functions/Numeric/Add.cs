@@ -15,8 +15,7 @@ namespace XCScript.Functions.Numeric
 
         public object Execute(IArgument[] arguments, Dictionary<string, object> globals)
         {
-            var tup = Base.Get(arguments, globals);
-            return tup.Item1 + tup.Item2;
+            return Base.Evaluate(arguments, globals, (a, b) => a + b);
         }
     }
 }

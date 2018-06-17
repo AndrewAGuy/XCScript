@@ -27,11 +27,26 @@ namespace XCScript.Functions.Numeric
             }
         }
 
+        public static double Evaluate(IArgument[] args, Dictionary<string, object> glob, Func<double, double, double> func)
+        {
+            if (args.Length < 2)
+            {
+                throw new ArgumentCountException("Numeric operations require at least 2 arguments");
+            }
+
+            var val = Get(args[0].Evaluate(glob));
+            for (var i = 1; i < args.Length; ++i)
+            {
+                val = func(val, Get(args[i].Evaluate(glob)));
+            }
+            return val;
+        }
+
         public static Tuple<double, double> Get(IArgument[] args, Dictionary<string, object> glob)
         {
             if (args.Length < 2)
             {
-                throw new ArgumentCountException("Numeric operations require 2 arguments");
+                throw new ArgumentCountException("Numeric comparisons require 2 arguments");
             }
             else if (args.Length > 2)
             {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using XCScript.Arguments;
+using XCScript.Functions.Exceptions;
 
 namespace XCScript.Functions.Logical
 {
@@ -15,8 +16,7 @@ namespace XCScript.Functions.Logical
 
         public object Execute(IArgument[] arguments, Dictionary<string, object> globals)
         {
-            var tup = Base.Get(arguments, globals);
-            return tup.Item1 && tup.Item2;
+            return Base.And(arguments, globals);
         }
     }
 }

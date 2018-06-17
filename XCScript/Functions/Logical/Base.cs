@@ -27,6 +27,38 @@ namespace XCScript.Functions.Logical
             }
         }
 
+        public static bool And(IArgument[] args, Dictionary<string, object> glob)
+        {
+            if (args.Length < 2)
+            {
+                throw new ArgumentCountException("Logical and operations require at least 2 arguments");
+            }
+            foreach (var arg in args)
+            {
+                if (!Get(arg.Evaluate(glob)))
+                {
+                    return false;
+                }
+            }
+            return true; // All arguments true
+        }
+
+        public static bool Or(IArgument[] args, Dictionary<string, object> glob)
+        {
+            if (args.Length < 2)
+            {
+                throw new ArgumentCountException("Logical or operations require at least 2 arguments");
+            }
+            foreach (var arg in args)
+            {
+                if (Get(arg.Evaluate(glob)))
+                {
+                    return true;
+                }
+            }
+            return false; // All false
+        }
+
         public static Tuple<bool, bool> Get(IArgument[] args, Dictionary<string, object> glob)
         {
             if (args.Length < 2)
