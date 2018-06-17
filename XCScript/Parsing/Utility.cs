@@ -24,25 +24,35 @@ namespace XCScript.Parsing
         {
             while (char.IsWhiteSpace(chr))
             {
-                var ichr = reader.Read();
-                if (ichr == -1)
+                if (!Advance(reader, out chr))
                 {
                     return false;
                 }
-                chr = (char)ichr;
             }
             return true;
         }
 
         public static bool AdvanceWhiteSpace(TextReader reader, out char chr)
         {
-            chr = '\0';
+            while (Advance(reader, out chr))
+            {
+                if (!char.IsWhiteSpace(chr))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool AdvanceLine(TextReader reader, out char chr)
+        {
+            chr = '\n';
             var ichr = reader.Read();
             while (ichr != -1)
             {
-                chr = (char)ichr;
-                if (!char.IsWhiteSpace(chr))
+                if ((char)ichr == '\n')
                 {
+                    // Don't advance another, else we might get phrase continuations over lines
                     return true;
                 }
                 ichr = reader.Read();
@@ -50,7 +60,7 @@ namespace XCScript.Parsing
             return false;
         }
 
-        public static bool Advance(TextReader reader, out char chr)
+        public static bool Advance(TextReader reader, out char chr, bool stringParse = false)
         {
             var ichr = reader.Read();
             if (ichr == -1)
@@ -59,6 +69,11 @@ namespace XCScript.Parsing
                 return false;
             }
             chr = (char)ichr;
+            if (chr == '#' && !stringParse)
+            {
+                // Remainder of line is a comment
+                return AdvanceLine(reader, out chr);
+            }
             return true;
         }
 

@@ -13,6 +13,10 @@ namespace XCScript.Functions.Logical
             {
                 case bool b:
                     return b;
+                case double d:
+                    return d != 0.0;
+                case int i:
+                    return i != 0;
                 default:
                     var s = o.ToString();
                     if (!bool.TryParse(s, out var v))

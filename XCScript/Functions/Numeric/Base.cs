@@ -15,6 +15,8 @@ namespace XCScript.Functions.Numeric
                     return d;
                 case int i:
                     return i;
+                case float f:
+                    return f;
                 default:
                     var s = o.ToString();
                     if (!double.TryParse(s, out var v))

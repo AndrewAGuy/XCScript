@@ -50,12 +50,12 @@ namespace XCScript.Parsing
         public static IArgument String(TextReader reader, ref char chr)
         {
             var str = new StringBuilder();
-            while (Utility.Advance(reader, out chr))
+            while (Utility.Advance(reader, out chr, true))
             {
                 if (chr == '\\')
                 {
                     str.Append(chr);
-                    if (!Utility.Advance(reader, out chr))
+                    if (!Utility.Advance(reader, out chr, true))
                     {
                         throw new FinalCharacterException("Expected escaped character after '\\'");
                     }
