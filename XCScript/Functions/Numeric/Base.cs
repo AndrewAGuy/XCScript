@@ -42,13 +42,13 @@ namespace XCScript.Functions.Numeric
             return val;
         }
 
-        public static Tuple<double, double> Get(IArgument[] args, Dictionary<string, object> glob)
+        public static Tuple<double, double> Get(IArgument[] args, Dictionary<string, object> glob, bool only2 = true)
         {
             if (args.Length < 2)
             {
                 throw new ArgumentCountException("Numeric comparisons require 2 arguments");
             }
-            else if (args.Length > 2)
+            else if (args.Length > 2 && only2)
             {
                 (glob[Engine.RKey] as Result)?
                     .Messages.Add($"Numeric operation called with {args.Length} arguments, first 2 will be used");

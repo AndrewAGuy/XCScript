@@ -113,6 +113,7 @@
     <Compile Include="Parsing\Literals.cs" />
     <Compile Include="Parsing\Utility.cs" />
     <Compile Include="Plugins\Interaction\IProperty.cs" />
+    <Compile Include="Plugins\Interaction\ObjectProperty.cs" />
     <Compile Include="Plugins\Interaction\PropertyBase.cs" />
     <Compile Include="Plugins\Interaction\BooleanProperty.cs" />
     <Compile Include="Plugins\Interaction\DoubleProperty.cs" />

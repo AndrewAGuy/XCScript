@@ -60,14 +60,31 @@ namespace XCScript
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public Engine(LoadingOptions opt = null)
+        private void AddDefaults()
         {
             globals[FKey] = functions;
             globals[PKey] = plugins;
             globals[RKey] = result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Engine(bool loadAll)
+        {
+            AddDefaults();
+            if (loadAll)
+            {
+                LoadAssembly(typeof(Engine).Assembly);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Engine(LoadingOptions opt)
+        {
+            AddDefaults();
             if (opt != null)
             {
                 var funcs = new List<IFunction>();
@@ -86,6 +103,7 @@ namespace XCScript
                     funcs.AddRange(new IFunction[]
                     {
                         new Do(),
+                        new Foreach(),
                         new If(),
                         new Throw(),
                         new Until(),
@@ -114,14 +132,18 @@ namespace XCScript
                     funcs.AddRange(new IFunction[] 
                     {
                         new Add(),
+                        new ConstantE(),
+                        new ConstantPi(),
                         new Divide(),
                         new Equal(),
                         new Greater(),
                         new GreaterEqual(),
                         new Less(),
                         new LessEqual(),
+                        new Logarithm(),
                         new Multiply(),
                         new NotEqual(),
+                        new Power(),
                         new Subtract()
                     });
                 }
@@ -281,9 +303,10 @@ namespace XCScript
                 var assy = Assembly.LoadFile(Path.GetFullPath(path));
                 return LoadAssembly(assy);
             }
-            catch
+            catch (Exception e)
             {
-                return new Result(false, "Could not load " + path);
+                return new Result(false, "Could not load " + path 
+                    + ", failed with " + e.GetType().Name + ": " + e.Message);
             }
         }
 
