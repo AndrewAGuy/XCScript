@@ -26,7 +26,7 @@ namespace XCScript.Functions.Control
                 res.Messages.Add($"'if' called with {arguments.Length} arguments, only first 3 will be used");
             }
 
-            if ((bool)arguments[0].Evaluate(globals))
+            if (Logical.Base.Get(arguments[0].Evaluate(globals)))
             {
                 return arguments[1].Evaluate(globals);
             }

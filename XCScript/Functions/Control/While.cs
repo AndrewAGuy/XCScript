@@ -27,7 +27,7 @@ namespace XCScript.Functions.Control
             }
 
             object obj = null;
-            while ((bool)arguments[0].Evaluate(globals))
+            while (Logical.Base.Get(arguments[0].Evaluate(globals)))
             {
                 obj = arguments[1].Evaluate(globals);
             }

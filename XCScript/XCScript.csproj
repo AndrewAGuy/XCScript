@@ -59,6 +59,7 @@
     <Compile Include="Functions\Access\Index.cs" />
     <Compile Include="Functions\Access\Map.cs" />
     <Compile Include="Functions\Control\Do.cs" />
+    <Compile Include="Functions\Control\Foreach.cs" />
     <Compile Include="Functions\Control\If.cs" />
     <Compile Include="Functions\Control\Throw.cs" />
     <Compile Include="Functions\Control\Until.cs" />

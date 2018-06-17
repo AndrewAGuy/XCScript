@@ -20,16 +20,26 @@ namespace XCScript.Functions.Control
             {
                 throw new ArgumentCountException("'do' requires 2 arguments");
             }
-            else if (arguments.Length > 2)
+            else if (arguments.Length > 3)
             {
                 var res = globals[Engine.RKey] as Result;
-                res.Messages.Add($"'do' called with {arguments.Length} arguments, only first 2 will be used");
+                res?.Messages.Add($"'do' called with {arguments.Length} arguments, only first 3 will be used");
             }
 
-            var end = (int)arguments[0].Evaluate(globals);
+            string name = null;
+            if (arguments.Length > 2)
+            {
+                name = arguments[2].Evaluate(globals) as string;
+            }
+
+            var end = Access.Index.Get(arguments[0].Evaluate(globals));
             object obj = null;
             for (var i = 0; i < end; ++i)
             {
+                if (name != null)
+                {
+                    globals[name] = i;
+                }
                 obj = arguments[1].Evaluate(globals);
             }
             return obj;

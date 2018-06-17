@@ -30,7 +30,7 @@ namespace XCScript.Functions.Control
             do
             {
                 obj = arguments[1].Evaluate(globals);
-            } while ((bool)arguments[0].Evaluate(globals));
+            } while (Logical.Base.Get(arguments[0].Evaluate(globals)));
             return obj;
         }
     }
