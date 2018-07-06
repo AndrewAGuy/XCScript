@@ -4,6 +4,7 @@ using System.IO;
 using XCScript.Arguments;
 using XCScript.Execution;
 using XCScript.Functions.Exceptions;
+using XCScript.Parsing;
 using XCScript.Parsing.Exceptions;
 
 namespace XCScript.Functions.Execution
@@ -36,20 +37,26 @@ namespace XCScript.Functions.Execution
             }
             else if (arguments[0].Evaluate(globals) is string s)
             {
+                CharSource source = null;
+                StreamReader file = null;
                 try
                 {
                     var functions = globals[Engine.FKey] as Dictionary<string, IFunction>;
-                    var file = File.OpenText(s);
-                    var exec = Parsing.Evaluatable.Parse(file, functions);
-                    return exec;
+                    file = File.OpenText(s);
+                    source = new CharSource(file);
+                    return Evaluatable.Parse(source, functions);
                 }
                 catch (ParsingException p)
                 {
-                    throw new ExecutionException($"'interp' caught parsing error in '{s}' ({p.GetType().Name}): {p.Message}");
+                    throw new ExecutionException($"'interp' caught {p.GetType().Name} in '{s}' at line {source.Line}: {p.Message}");
                 }
                 catch (Exception ex)
                 {
-                    throw new ExecutionException($"'interp' caught exception ({ex.GetType().Name}): {ex.Message}");
+                    throw new ExecutionException($"'interp' caught {ex.GetType().Name}: {ex.Message}");
+                }
+                finally
+                {
+                    file.Dispose();
                 }
             }
             else

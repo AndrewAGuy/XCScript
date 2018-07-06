@@ -1,7 +1,6 @@
 ﻿using XCScript.Arguments;
 using XCScript.Parsing.Exceptions;
 using System;
-using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -12,12 +11,12 @@ namespace XCScript.Parsing
     /// </summary>
     internal static class Literals
     {
-        public static IArgument Number(TextReader reader, ref char chr)
+        public static IArgument Number(CharSource source, ref char chr)
         {
-            var integral = Utility.ReadInt(reader, ref chr);
+            var integral = source.ReadInt(ref chr);
             if (chr == '.')
             {
-                if (!Utility.Advance(reader, out chr))
+                if (!source.Advance(out chr))
                 {
                     throw new FinalCharacterException("Expected fractional value after '.'");
                 }
@@ -25,37 +24,43 @@ namespace XCScript.Parsing
                 {
                     throw new InvalidCharacterException($"Expected fractional value after '.': found '{chr}'");
                 }
-                var fractional = Utility.ReadFractional(reader, ref chr);
+                var fractional = source.ReadFractional(ref chr);
                 var mantissa = integral + fractional;
 
                 if (char.ToLower(chr) == 'e')
                 {
-                    if (!Utility.AdvanceWhiteSpace(reader, out chr))
+                    if (!source.AdvanceWhiteSpace(out chr))
                     {
                         throw new FinalCharacterException("Expected exponent after 'e'");
                     }
-                    else if (!Utility.IsNumberStart(chr))
+                    else if (!CharSource.IsNumberStart(chr))
                     {
                         throw new InvalidCharacterException($"Expected exponent after 'e': found '{chr}'");
                     }
-                    var exponent = Utility.ReadInt(reader, ref chr);
+                    var exponent = source.ReadInt(ref chr);
                     mantissa *= Math.Pow(10, exponent);
                 }
 
-                return new DoubleLiteral() { Value = mantissa };
+                return new DoubleLiteral()
+                {
+                    Value = mantissa
+                };
             }
-            return new IntegerLiteral() { Value = integral };
+            return new IntegerLiteral()
+            {
+                Value = integral
+            };
         }
 
-        public static IArgument String(TextReader reader, ref char chr)
+        public static IArgument String(CharSource source, ref char chr)
         {
             var str = new StringBuilder();
-            while (Utility.Advance(reader, out chr, true))
+            while (source.Advance(out chr, true))
             {
                 if (chr == '\\')
                 {
                     str.Append(chr);
-                    if (!Utility.Advance(reader, out chr, true))
+                    if (!source.Advance(out chr, true))
                     {
                         throw new FinalCharacterException("Expected escaped character after '\\'");
                     }
@@ -64,7 +69,7 @@ namespace XCScript.Parsing
                 else if (chr == '"')
                 {
                     // If this fails (i.e. the quote is the last character), future calls to skip space will fail
-                    Utility.Advance(reader, out chr);
+                    source.Advance(out chr);
                     return new StringLiteral()
                     {
                         Value = Regex.Unescape(str.ToString())
@@ -78,11 +83,11 @@ namespace XCScript.Parsing
             throw new FinalCharacterException("Expected closing '\"'");
         }
 
-        public static IArgument Default(TextReader reader, ref char chr)
+        public static IArgument Default(CharSource source, ref char chr)
         {
-            if (Utility.IsNameStart(chr))
+            if (CharSource.IsNameStart(chr))
             {
-                var name = Utility.ReadName(reader, ref chr);
+                var name = source.ReadName(ref chr);
                 if (bool.TryParse(name, out var bval))
                 {
                     return new BooleanLiteral()
@@ -95,17 +100,17 @@ namespace XCScript.Parsing
                     Value = name
                 };
             }
-            else if (Utility.IsNumberStart(chr))
+            else if (CharSource.IsNumberStart(chr))
             {
-                return Number(reader, ref chr);
+                return Number(source, ref chr);
             }
             throw new InvalidCharacterException($"Not a valid name or number start: '{chr}'");
         }
 
-        public static IArgument TypeName(TextReader reader, ref char chr)
+        public static IArgument TypeName(CharSource source, ref char chr)
         {
             // Arrive on seeing '/', get collections of names separated by '.'
-            if (!Utility.Advance(reader, out chr))
+            if (!source.Advance(out chr))
             {
                 throw new FinalCharacterException("Expected type name");
             }
@@ -113,18 +118,21 @@ namespace XCScript.Parsing
             var str = new StringBuilder();
             while (true)
             {
-                str.Append(Utility.ReadName(reader, ref chr));
+                str.Append(source.ReadName(ref chr));
                 if (chr != '.')
                 {
-                    return new TypeNameLiteral() { Value = str.ToString() };
+                    return new TypeNameLiteral()
+                    {
+                        Value = str.ToString()
+                    };
                 }
                 str.Append('.');
                 // We now expect more
-                if (!Utility.Advance(reader, out chr))
+                if (!source.Advance(out chr))
                 {
                     throw new FinalCharacterException("Expected further type name");
                 }
-                if (!Utility.IsNameStart(chr))
+                if (!CharSource.IsNameStart(chr))
                 {
                     throw new InvalidCharacterException("Expected name start character: found " + chr);
                 }

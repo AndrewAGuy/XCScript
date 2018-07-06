@@ -1,23 +1,21 @@
 ﻿using XCScript.Functions;
 using XCScript.Arguments;
 using System.Collections.Generic;
-using System.IO;
-using XCScript.Execution;
 
 namespace XCScript.Parsing
 {
     internal static class Arguments
     {
-        public static ArgumentList Multiple(TextReader reader, ref char chr, Dictionary<string, IFunction> funcs)
+        public static ArgumentList Multiple(CharSource source, ref char chr, Dictionary<string, IFunction> funcs)
         {
             var args = new ArgumentList();
             // Typically get here having seen nothing or the first character already
             // Running out of text here is not an error, unless specified as more to come
-            while (Utility.SkipWhiteSpace(reader, ref chr))
+            while (source.SkipWhiteSpace(ref chr))
             {
-                var arg = Single(reader, ref chr, funcs);
+                var arg = Single(source, ref chr, funcs);
                 args.Add(arg);
-                if (!Utility.SkipWhiteSpace(reader, ref chr))
+                if (!source.SkipWhiteSpace(ref chr))
                 {
                     return args;
                 }
@@ -25,30 +23,30 @@ namespace XCScript.Parsing
                 {
                     return args;
                 }
-                Utility.Advance(reader, out chr);
+                source.Advance(out chr);
             }
             // No need to throw here, as if more expected single argument parsing will catch
             return args;
         }
-        
-        public static IArgument Single(TextReader reader, ref char chr, Dictionary<string, IFunction> funcs)
+
+        public static IArgument Single(CharSource source, ref char chr, Dictionary<string, IFunction> funcs)
         {
             switch (chr)
             {
                 case '"':
-                    return Literals.String(reader, ref chr);
+                    return Literals.String(source, ref chr);
                 case '{':
-                    return Collections.Dictionary(reader, ref chr, funcs);
+                    return Collections.Dictionary(source, ref chr, funcs);
                 case '[':
-                    return Collections.Array(reader, ref chr, funcs);
+                    return Collections.Array(source, ref chr, funcs);
                 case '(':
-                    return Evaluatable.Function(reader, ref chr, funcs);
+                    return Evaluatable.Function(source, ref chr, funcs);
                 case '<':
-                    return Evaluatable.Executable(reader, ref chr, funcs);
+                    return Evaluatable.Executable(source, ref chr, funcs);
                 case '/':
-                    return Literals.TypeName(reader, ref chr);
+                    return Literals.TypeName(source, ref chr);
                 default:
-                    return Literals.Default(reader, ref chr);
+                    return Literals.Default(source, ref chr);
             }
         }
     }

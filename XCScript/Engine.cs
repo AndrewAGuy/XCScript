@@ -12,6 +12,7 @@ using XCScript.Functions.Execution;
 using XCScript.Functions.Logical;
 using XCScript.Functions.Numeric;
 using XCScript.Functions.Plugins;
+using XCScript.Parsing;
 using XCScript.Parsing.Exceptions;
 using XCScript.Plugins;
 
@@ -22,6 +23,44 @@ namespace XCScript
     /// </summary>
     public class Engine
     {
+        /// <summary>
+        /// Handles message logging such as console, stderr or gui output
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="msg"></param>
+        /// <param name="code"></param>
+        /// <param name="time"></param>
+        public delegate void LogHandler(object src, string msg, int code, DateTime time);
+
+        /// <summary>
+        /// The message logging event
+        /// </summary>
+        public event LogHandler LogEvent;
+
+        /// <summary>
+        /// Invokes the logging event
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="code"></param>
+        public void Log(string msg, int code = 0)
+        {
+            LogEvent?.Invoke(this, msg, code, DateTime.Now);
+        }
+
+        /// <summary>
+        /// If multiple engines exist, attach a name to them for reporting
+        /// </summary>
+        public string Name { get; set; } = "";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return typeof(Engine).FullName + ": " + this.Name;
+        }
+
         private readonly Dictionary<string, object> globals = new Dictionary<string, object>();
         private readonly Dictionary<string, IFunction> functions = new Dictionary<string, IFunction>();
         private readonly Result result = new Result();
@@ -120,7 +159,7 @@ namespace XCScript
                 }
                 if (opt.Plugins)
                 {
-                    funcs.AddRange(new IFunction[] 
+                    funcs.AddRange(new IFunction[]
                     {
                         new Alias(),
                         new New(),
@@ -129,7 +168,7 @@ namespace XCScript
                 }
                 if (opt.Numeric)
                 {
-                    funcs.AddRange(new IFunction[] 
+                    funcs.AddRange(new IFunction[]
                     {
                         new Add(),
                         new ConstantE(),
@@ -241,43 +280,87 @@ namespace XCScript
         /// <summary>
         /// Interprets a text source into an executable item
         /// </summary>
-        /// <param name="reader"></param>
+        /// <param name="path"></param>
+        /// <param name="executable"></param>
         /// <returns></returns>
-        public Executable Interpret(TextReader reader)
+        public Result InterpretFile(string path, out Executable executable)
         {
-            var exec = Parsing.Evaluatable.Parse(reader, functions);
-            reader.Dispose();
-            return exec;
+            var res = new Result();
+            CharSource source = null;
+            StreamReader text = null;
+            executable = null;
+            try
+            {
+                text = File.OpenText(path);
+                source = new CharSource(text);
+                executable = Evaluatable.Parse(source, functions);
+                return new Result();
+            }
+            catch (ParsingException p)
+            {
+                return new Result(false, $"Caught {p.GetType().Name} in '{path}' at line {source.Line}: {p.Message}");
+            }
+            catch (Exception e)
+            {
+                return new Result(false, $"Caught {e.GetType().Name}: {e.Message}");
+            }
+            finally
+            {
+                text.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// For command line input
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="executable"></param>
+        /// <returns></returns>
+        public Result InterpretString(string text, out Executable executable)
+        {
+            var res = new Result();
+            var source = new CharSource(new StringReader(text));
+            executable = null;
+            try
+            {
+                executable = Evaluatable.Parse(source, functions);
+                return new Result();
+            }
+            catch (ParsingException p)
+            {
+                return new Result(false, $"Caught {p.GetType().Name} at line {source.Line}: {p.Message}");
+            }
+            catch (Exception e)
+            {
+                return new Result(false, $"Caught {e.GetType().Name}: {e.Message}");
+            }
         }
 
         /// <summary>
         /// Interprets and executes the given text source, evaluating and resetting the global results
         /// </summary>
-        /// <param name="reader"></param>
+        /// <param name="data"></param>
+        /// <param name="isPath"></param>
         /// <returns></returns>
-        public Result Execute(TextReader reader)
+        public Result Execute(string data, bool isPath = false)
         {
-            try
+            result.Reset();
+            var res = isPath ? InterpretFile(data, out var exec) : InterpretString(data, out exec);
+            if (!res.Success)
             {
-                Interpret(reader).Execute(globals);
-                // Get warnings
-                var res = new Result().Append(result);
-                result.Reset();
                 return res;
             }
-            catch (ParsingException p)
+
+            try
             {
-                // No execution to worry about
-                return new Result(false, $"Caught parsing exception ({p.GetType().Name}): {p.Message}");
+                exec.Execute(globals);
             }
             catch (ExecutionException e)
             {
-                // Get execution warnings, then error
-                var res = new Result().Append(result);
-                res.Append(new Result(false, $"Caught execution exception ({e.GetType().Name}): {e.Message}"), true);
-                result.Reset();
-                return res;
+                res = new Result(false, $"Caught {e.GetType().Name}: {e.Message}");
             }
+            // Get warnings
+            return res.Append(result);
         }
 
         /// <summary>
@@ -305,7 +388,7 @@ namespace XCScript
             }
             catch (Exception e)
             {
-                return new Result(false, "Could not load " + path 
+                return new Result(false, "Could not load " + path
                     + ", failed with " + e.GetType().Name + ": " + e.Message);
             }
         }

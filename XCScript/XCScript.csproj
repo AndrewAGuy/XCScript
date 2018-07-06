@@ -111,7 +111,7 @@
     <Compile Include="Parsing\Exceptions\InvalidCharacterException.cs" />
     <Compile Include="Parsing\Exceptions\ParsingException.cs" />
     <Compile Include="Parsing\Literals.cs" />
-    <Compile Include="Parsing\Utility.cs" />
+    <Compile Include="Parsing\CharSource.cs" />
     <Compile Include="Plugins\Interaction\IProperty.cs" />
     <Compile Include="Plugins\Interaction\ObjectProperty.cs" />
     <Compile Include="Plugins\Interaction\PropertyBase.cs" />

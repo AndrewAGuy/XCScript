@@ -3,8 +3,24 @@ using System.Text;
 
 namespace XCScript.Parsing
 {
-    internal static class Utility
+    internal class CharSource
     {
+        private TextReader reader;
+        private int line = 1;
+
+        public CharSource(TextReader source)
+        {
+            reader = source;
+        }
+
+        public int Line
+        {
+            get
+            {
+                return line;
+            }
+        }
+
         public static bool IsNameCharacter(char ch)
         {
             return char.IsLetterOrDigit(ch) || ch == '_';
@@ -20,11 +36,11 @@ namespace XCScript.Parsing
             return char.IsDigit(ch) || ch == '-' || ch == '+';
         }
 
-        public static bool SkipWhiteSpace(TextReader reader, ref char chr)
+        public bool SkipWhiteSpace(ref char chr)
         {
             while (char.IsWhiteSpace(chr))
             {
-                if (!Advance(reader, out chr))
+                if (!Advance(out chr))
                 {
                     return false;
                 }
@@ -32,9 +48,9 @@ namespace XCScript.Parsing
             return true;
         }
 
-        public static bool AdvanceWhiteSpace(TextReader reader, out char chr)
+        public bool AdvanceWhiteSpace(out char chr)
         {
-            while (Advance(reader, out chr))
+            while (Advance(out chr))
             {
                 if (!char.IsWhiteSpace(chr))
                 {
@@ -44,7 +60,7 @@ namespace XCScript.Parsing
             return false;
         }
 
-        public static bool AdvanceLine(TextReader reader, out char chr)
+        public bool AdvanceLine(out char chr)
         {
             chr = '\n';
             var ichr = reader.Read();
@@ -53,6 +69,7 @@ namespace XCScript.Parsing
                 if ((char)ichr == '\n')
                 {
                     // Don't advance another, else we might get phrase continuations over lines
+                    line++;
                     return true;
                 }
                 ichr = reader.Read();
@@ -60,7 +77,7 @@ namespace XCScript.Parsing
             return false;
         }
 
-        public static bool Advance(TextReader reader, out char chr, bool stringParse = false)
+        public bool Advance(out char chr, bool stringParse = false)
         {
             var ichr = reader.Read();
             if (ichr == -1)
@@ -72,15 +89,19 @@ namespace XCScript.Parsing
             if (chr == '#' && !stringParse)
             {
                 // Remainder of line is a comment
-                return AdvanceLine(reader, out chr);
+                return AdvanceLine(out chr);
+            }
+            if (chr == '\n')
+            {
+                line++;
             }
             return true;
         }
 
-        public static string ReadName(TextReader reader, ref char chr)
+        public string ReadName(ref char chr)
         {
             var str = new StringBuilder().Append(chr);
-            while (Advance(reader, out chr))
+            while (Advance(out chr))
             {
                 if (!IsNameCharacter(chr))
                 {
@@ -91,10 +112,10 @@ namespace XCScript.Parsing
             return str.ToString();
         }
 
-        public static int ReadInt(TextReader reader, ref char chr)
+        public int ReadInt(ref char chr)
         {
             var str = new StringBuilder().Append(chr);
-            while (Advance(reader, out chr))
+            while (Advance(out chr))
             {
                 if (!char.IsDigit(chr))
                 {
@@ -105,10 +126,10 @@ namespace XCScript.Parsing
             return int.TryParse(str.ToString(), out var i) ? i : 0;
         }
 
-        public static double ReadFractional(TextReader reader, ref char chr)
+        public double ReadFractional(ref char chr)
         {
             var str = new StringBuilder("0.").Append(chr);
-            while (Advance(reader, out chr))
+            while (Advance(out chr))
             {
                 if (!char.IsDigit(chr))
                 {
