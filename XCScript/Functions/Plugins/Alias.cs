@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using XCScript.Arguments;
 using XCScript.Functions.Exceptions;
-using XCScript.Plugins;
 
 namespace XCScript.Functions.Plugins
 {
@@ -15,7 +14,7 @@ namespace XCScript.Functions.Plugins
             }
         }
 
-        public object Execute(IArgument[] arguments, Dictionary<string, object> globals)
+        public object Execute(IArgument[] arguments, Engine context)
         {
             if (arguments.Length == 0)
             {
@@ -23,31 +22,29 @@ namespace XCScript.Functions.Plugins
             }
             else if (arguments.Length > 2)
             {
-                var res = globals[Engine.RKey] as Result;
-                res.Messages.Add($"'alias' called with {arguments.Length} arguments, only first 2 will be used");
+                context.Log($"'alias' called with {arguments.Length} arguments, only first 2 will be used");
             }
-
-            var manager = globals[Engine.PKey] as Manager;
+            
             if (arguments.Length == 1)
             {
-                if (!(arguments[0].Evaluate(globals) is Dictionary<string, IArgument> dict))
+                if (!(arguments[0].Evaluate(context.Globals) is Dictionary<string, IArgument> dict))
                 {
                     throw new ArgumentTypeException("'alias' called with 1 argument takes a dictionary");
                 }
                 foreach (var kv in dict)
                 {
-                    if (kv.Value.Evaluate(globals) is string s)
+                    if (kv.Value.Evaluate(context.Globals) is string s)
                     {
-                        manager.Alias(kv.Key, s);
+                        context.Plugins.Alias(kv.Key, s);
                     }
                 }
             }
             else
             {
-                if (arguments[0].Evaluate(globals) is string name &&
-                    arguments[1].Evaluate(globals) is string type)
+                if (arguments[0].Evaluate(context.Globals) is string name &&
+                    arguments[1].Evaluate(context.Globals) is string type)
                 {
-                    manager.Alias(name, type);
+                    context.Plugins.Alias(name, type);
                 }
                 else
                 {

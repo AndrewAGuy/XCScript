@@ -53,7 +53,7 @@ namespace XCScript
         public string Name { get; set; } = "";
 
         /// <summary>
-        /// 
+        /// For reporting purposes
         /// </summary>
         /// <returns></returns>
         public override string ToString()

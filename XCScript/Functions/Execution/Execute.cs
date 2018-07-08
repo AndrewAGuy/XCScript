@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using XCScript.Arguments;
 using XCScript.Execution;
@@ -19,7 +18,7 @@ namespace XCScript.Functions.Execution
             }
         }
 
-        object IFunction.Execute(IArgument[] arguments, Dictionary<string, object> globals)
+        object IFunction.Execute(IArgument[] arguments, Engine context)
         {
             if (arguments.Length == 0)
             {
@@ -27,14 +26,13 @@ namespace XCScript.Functions.Execution
             }
             else if (arguments.Length > 1)
             {
-                var res = globals[Engine.RKey] as Result;
-                res.Messages.Add($"'exec' called with {arguments.Length} arguments, only first will be used");
+               context.Log($"'exec' called with {arguments.Length} arguments, only first will be used");
             }
 
-            switch (arguments[0].Evaluate(globals))
+            switch (arguments[0].Evaluate(context.Globals))
             {
                 case Executable e:
-                    e.Execute(globals);
+                    e.Execute(context.Globals);
                     break;
 
                 case string s:
@@ -42,10 +40,9 @@ namespace XCScript.Functions.Execution
                     StreamReader file = null;
                     try
                     {
-                        var functions = globals[Engine.FKey] as Dictionary<string, IFunction>;
                         file = File.OpenText(s);
                         source = new CharSource(file);
-                        Evaluatable.Parse(source, functions).Execute(globals);
+                        Evaluatable.Parse(source, context.Functions).Execute(context.Globals);
                     }
                     catch (ExecutionException) // Propagate these out to the caller
                     {

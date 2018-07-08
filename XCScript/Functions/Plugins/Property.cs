@@ -15,7 +15,7 @@ namespace XCScript.Functions.Plugins
             }
         }
 
-        public object Execute(IArgument[] arguments, Dictionary<string, object> globals)
+        public object Execute(IArgument[] arguments, Engine context)
         {
             // Variations:
             //      Get: IPlugin, string => object
@@ -27,36 +27,56 @@ namespace XCScript.Functions.Plugins
             }
             else if (arguments.Length > 3)
             {
-                var res = globals[Engine.RKey] as Result;
-                res.Messages.Add($"'prop' called with {arguments.Length} arguments, only first 3 will be used");
+                context.Log($"'prop' called with {arguments.Length} arguments, only first 3 will be used");
             }
 
-            var plugin = arguments[0].Evaluate(globals) as IPlugin;
+            var plugin = arguments[0].Evaluate(context.Globals) as IPlugin;
             if (plugin == null)
             {
                 throw new ArgumentTypeException("'prop' requires the first argument to be of type IPlugin");
             }
 
-            var arg1 = arguments[1].Evaluate(globals);
+            var arg1 = arguments[1].Evaluate(context.Globals);
             if (arg1 is Dictionary<string, IArgument> dict)
             {
                 foreach (var kv in dict)
                 {
-                    plugin[kv.Key]?.TrySetValue(kv.Value.Evaluate(globals));
+                    var prop = plugin[kv.Key];
+                    if (prop == null)
+                    {
+                        context.Log($"No such property: '{kv.Key}' on object of type {plugin.GetType().FullName}");
+                    }
+                    else
+                    {
+                        var res = prop.TrySetValue(kv.Value.Evaluate(context.Globals));
+                        if (!res.Success)
+                        {
+                            context.Log($"In property: '{kv.Key}' on object of type {plugin.GetType().FullName}" + res.Messages[0]);
+                        }
+                    }
                 }
                 return plugin;
             }
             else if (arg1 is string name)
             {
-                if (arguments.Length > 2)
+                var prop = plugin[name];
+                if (prop == null)
                 {
-                    plugin[name]?.TrySetValue(arguments[2].Evaluate(globals));
-                    return plugin;
+                    context.Log($"No such property: '{name}' on object of type {plugin.GetType().FullName}");
+                    return null;
                 }
-                else
+
+                if (arguments.Length == 2)
                 {
-                    return plugin[name]?.Value;
+                    return prop.Value;
                 }
+
+                var res = prop.TrySetValue(arguments[2].Evaluate(context.Globals));
+                if (!res.Success)
+                {
+                    context.Log($"In property: '{name}' on object of type {plugin.GetType().FullName} - " + res.Messages[0]);
+                }
+                return plugin;
             }
             else
             {

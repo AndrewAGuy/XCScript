@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using XCScript.Arguments;
 using XCScript.Execution;
@@ -19,7 +18,7 @@ namespace XCScript.Functions.Execution
             }
         }
 
-        public object Execute(IArgument[] arguments, Dictionary<string, object> globals)
+        public object Execute(IArgument[] arguments, Engine context)
         {
             if (arguments.Length == 0)
             {
@@ -27,24 +26,22 @@ namespace XCScript.Functions.Execution
             }
             else if (arguments.Length > 1)
             {
-                var res = globals[Engine.RKey] as Result;
-                res.Messages.Add($"'interp' called with {arguments.Length} arguments, only first will be used");
+                context.Log($"'interp' called with {arguments.Length} arguments, only first will be used");
             }
 
             if (arguments[0].Literal is Executable e)
             {
                 return e;
             }
-            else if (arguments[0].Evaluate(globals) is string s)
+            else if (arguments[0].Evaluate(context.Globals) is string s)
             {
                 CharSource source = null;
                 StreamReader file = null;
                 try
                 {
-                    var functions = globals[Engine.FKey] as Dictionary<string, IFunction>;
                     file = File.OpenText(s);
                     source = new CharSource(file);
-                    return Evaluatable.Parse(source, functions);
+                    return Evaluatable.Parse(source, context.Functions);
                 }
                 catch (ParsingException p)
                 {
