@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace XCScript.Arguments
+﻿namespace XCScript.Arguments
 {
     internal class IntegerLiteral : IArgument
     {
@@ -14,7 +12,7 @@ namespace XCScript.Arguments
             }
         }
 
-        public object Evaluate(Dictionary<string, object> globals)
+        public object Evaluate(Engine context)
         {
             return this.Value;
         }

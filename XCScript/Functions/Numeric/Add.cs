@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using XCScript.Arguments;
+﻿using XCScript.Arguments;
 
 namespace XCScript.Functions.Numeric
 {
@@ -13,9 +12,9 @@ namespace XCScript.Functions.Numeric
             }
         }
 
-        public object Execute(IArgument[] arguments, Dictionary<string, object> globals)
+        public object Execute(IArgument[] arguments, Engine context)
         {
-            return Base.Evaluate(arguments, globals, (a, b) => a + b);
+            return Base.Evaluate(arguments, context, (a, b) => a + b);
         }
     }
 }

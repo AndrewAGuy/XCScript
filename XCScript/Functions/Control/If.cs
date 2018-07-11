@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using XCScript.Arguments;
+﻿using XCScript.Arguments;
 using XCScript.Functions.Exceptions;
 
 namespace XCScript.Functions.Control
@@ -14,7 +13,7 @@ namespace XCScript.Functions.Control
             }
         }
 
-        public object Execute(IArgument[] arguments, Dictionary<string, object> globals)
+        public object Execute(IArgument[] arguments, Engine context)
         {
             if (arguments.Length < 2)
             {
@@ -22,17 +21,16 @@ namespace XCScript.Functions.Control
             }
             if (arguments.Length > 3)
             {
-                var res = globals[Engine.RKey] as Result;
-                res.Messages.Add($"'if' called with {arguments.Length} arguments, only first 3 will be used");
+                context.Log($"'if' called with {arguments.Length} arguments, only first 3 will be used");
             }
 
-            if (Logical.Base.Get(arguments[0].Evaluate(globals)))
+            if (Logical.Base.Get(arguments[0].Evaluate(context)))
             {
-                return arguments[1].Evaluate(globals);
+                return arguments[1].Evaluate(context);
             }
             else
             {
-                return arguments.Length > 2 ? arguments[2].Evaluate(globals) : null;
+                return arguments.Length > 2 ? arguments[2].Evaluate(context) : null;
             }
         }
     }

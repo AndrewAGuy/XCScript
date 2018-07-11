@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
 
 namespace XCScript.Arguments
@@ -16,7 +15,7 @@ namespace XCScript.Arguments
             }
         }
 
-        public object Evaluate(Dictionary<string, object> globals)
+        public object Evaluate(Engine context)
         {
             return this.Value;
         }

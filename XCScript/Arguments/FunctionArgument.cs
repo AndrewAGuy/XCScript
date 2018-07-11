@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using XCScript.Execution;
+﻿using XCScript.Execution;
 
 namespace XCScript.Arguments
 {
@@ -16,9 +15,9 @@ namespace XCScript.Arguments
             }
         }
 
-        public object Evaluate(Dictionary<string, object> globals)
+        public object Evaluate(Engine context)
         {
-            return this.Call.Evaluate(globals);
+            return this.Call.Evaluate(context);
         }
 
         public override string ToString()

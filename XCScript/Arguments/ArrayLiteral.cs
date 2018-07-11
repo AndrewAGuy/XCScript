@@ -20,7 +20,7 @@ namespace XCScript.Arguments
             args.Add(arg);
         }
 
-        public object Evaluate(Dictionary<string, object> globals)
+        public object Evaluate(Engine context)
         {
             return args.ToArray();
         }

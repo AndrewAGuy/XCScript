@@ -27,13 +27,13 @@ namespace XCScript.Functions.Plugins
             
             if (arguments.Length == 1)
             {
-                if (!(arguments[0].Evaluate(context.Globals) is Dictionary<string, IArgument> dict))
+                if (!(arguments[0].Evaluate(context) is Dictionary<string, IArgument> dict))
                 {
                     throw new ArgumentTypeException("'alias' called with 1 argument takes a dictionary");
                 }
                 foreach (var kv in dict)
                 {
-                    if (kv.Value.Evaluate(context.Globals) is string s)
+                    if (kv.Value.Evaluate(context) is string s)
                     {
                         context.Plugins.Alias(kv.Key, s);
                     }
@@ -41,8 +41,8 @@ namespace XCScript.Functions.Plugins
             }
             else
             {
-                if (arguments[0].Evaluate(context.Globals) is string name &&
-                    arguments[1].Evaluate(context.Globals) is string type)
+                if (arguments[0].Evaluate(context) is string name &&
+                    arguments[1].Evaluate(context) is string type)
                 {
                     context.Plugins.Alias(name, type);
                 }

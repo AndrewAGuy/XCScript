@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace XCScript.Arguments
+﻿namespace XCScript.Arguments
 {
     internal class NameArgument : IArgument
     {
@@ -14,9 +12,9 @@ namespace XCScript.Arguments
             }
         }
 
-        public object Evaluate(Dictionary<string, object> globals)
+        public object Evaluate(Engine context)
         {
-            return globals.TryGetValue(this.Value, out var val) ? val : null;
+            return context.Globals.TryGetValue(this.Value, out var val) ? val : null;
         }
 
         public override string ToString()

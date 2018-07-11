@@ -14,7 +14,7 @@ namespace XCScript.Functions.Access
             }
         }
 
-        public object Execute(IArgument[] arguments, Dictionary<string, object> globals)
+        public object Execute(IArgument[] arguments, Engine context)
         {
             if (arguments.Length < 2)
             {
@@ -22,19 +22,18 @@ namespace XCScript.Functions.Access
             }
             else if (arguments.Length > 3)
             {
-                var res = globals[Engine.RKey] as Result;
-                res.Messages.Add($"'map' called with {arguments.Length} arguments, only first 3 will be used");
+                context.Log($"'map' called with {arguments.Length} arguments, only first 3 will be used");
             }
 
-            var dict = arguments[0].Evaluate(globals) as Dictionary<string, object>;
-            var key = arguments[1].Evaluate(globals) as string;
+            var dict = arguments[0].Evaluate(context) as Dictionary<string, object>;
+            var key = arguments[1].Evaluate(context) as string;
             if (arguments.Length < 3)
             {
                 return dict[key];
             }
             else
             {
-                var value = arguments[2].Evaluate(globals);
+                var value = arguments[2].Evaluate(context);
                 dict[key] = value;
                 return value;
             }

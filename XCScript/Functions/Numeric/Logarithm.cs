@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using XCScript.Arguments;
 using XCScript.Functions.Exceptions;
 
@@ -15,7 +14,7 @@ namespace XCScript.Functions.Numeric
             }
         }
 
-        public object Execute(IArgument[] arguments, Dictionary<string, object> globals)
+        public object Execute(IArgument[] arguments, Engine context)
         {
             if (arguments.Length == 0)
             {
@@ -24,11 +23,11 @@ namespace XCScript.Functions.Numeric
 
             if (arguments.Length == 1)
             {
-                return Math.Log(Base.Get(arguments[0].Evaluate(globals)));
+                return Math.Log(Base.Get(arguments[0].Evaluate(context)));
             }
             else
             {
-                var pair = Base.Get(arguments, globals);
+                var pair = Base.Get(arguments, context);
                 return Math.Log(pair.Item2, pair.Item1);
             }
         }

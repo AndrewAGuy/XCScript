@@ -29,10 +29,10 @@ namespace XCScript.Functions.Execution
                context.Log($"'exec' called with {arguments.Length} arguments, only first will be used");
             }
 
-            switch (arguments[0].Evaluate(context.Globals))
+            switch (arguments[0].Evaluate(context))
             {
                 case Executable e:
-                    e.Execute(context.Globals);
+                    e.Execute(context);
                     break;
 
                 case string s:
@@ -42,7 +42,7 @@ namespace XCScript.Functions.Execution
                     {
                         file = File.OpenText(s);
                         source = new CharSource(file);
-                        Evaluatable.Parse(source, context.Functions).Execute(context.Globals);
+                        Evaluatable.Parse(source, context.Functions).Execute(context);
                     }
                     catch (ExecutionException) // Propagate these out to the caller
                     {

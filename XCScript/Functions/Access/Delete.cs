@@ -13,32 +13,31 @@ namespace XCScript.Functions.Access
             }
         }
 
-        public void DeleteArray(IArgument[] array, Dictionary<string, object> globals)
+        public void DeleteArray(IArgument[] array, Engine context)
         {
             foreach (var arg in array)
             {
                 // To remove an object with the name xyz, call del:/xyz
                 // Otherwise it tries to get a string pointed stored as
-                switch (arg.Evaluate(globals))
+                switch (arg.Evaluate(context))
                 {
                     case string s:
-                        globals.Remove(s);
+                        context.Globals.Remove(s);
                         break;
                     case IArgument[] a:
-                        DeleteArray(a, globals);
+                        DeleteArray(a, context);
                         break;
                 }
             }
         }
 
-        public object Execute(IArgument[] arguments, Dictionary<string, object> globals)
+        public object Execute(IArgument[] arguments, Engine context)
         {
             if (arguments.Length == 0)
             {
-                var res = globals[Engine.RKey] as Result;
-                res.Messages.Add($"'del' called with 0 targets");
+                context.Log($"'del' called with 0 targets");
             }
-            DeleteArray(arguments, globals);
+            DeleteArray(arguments, context);
             return null;
         }
     }

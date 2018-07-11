@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using XCScript.Arguments;
 
 namespace XCScript.Functions.Numeric
@@ -14,7 +13,7 @@ namespace XCScript.Functions.Numeric
             }
         }
 
-        public object Execute(IArgument[] arguments, Dictionary<string, object> globals)
+        public object Execute(IArgument[] arguments, Engine context)
         {
             return Math.PI;
         }

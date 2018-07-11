@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace XCScript.Execution
@@ -10,20 +9,20 @@ namespace XCScript.Execution
 
         public string[] Names { get; set; }
 
-        public void Execute(Dictionary<string, object> globals)
+        public void Execute(Engine context)
         {
-            var res = this.Call.Evaluate(globals);
+            var res = this.Call.Evaluate(context);
             if (res is object[] obj)
             {
                 var length = Math.Min(obj.Length, this.Names.Length);
                 for (var i = 0; i < length; ++i)
                 {
-                    globals[this.Names[i]] = obj[i];
+                    context.Globals[this.Names[i]] = obj[i];
                 }
             }
             else
             {
-                globals[this.Names[0]] = res;
+                context.Globals[this.Names[0]] = res;
             }
         }
 

@@ -353,7 +353,7 @@ namespace XCScript
 
             try
             {
-                exec.Execute(globals);
+                exec.Execute(this);
             }
             catch (ExecutionException e)
             {

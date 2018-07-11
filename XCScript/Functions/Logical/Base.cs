@@ -27,7 +27,7 @@ namespace XCScript.Functions.Logical
             }
         }
 
-        public static bool And(IArgument[] args, Dictionary<string, object> glob)
+        public static bool And(IArgument[] args, Engine context)
         {
             if (args.Length < 2)
             {
@@ -35,7 +35,7 @@ namespace XCScript.Functions.Logical
             }
             foreach (var arg in args)
             {
-                if (!Get(arg.Evaluate(glob)))
+                if (!Get(arg.Evaluate(context)))
                 {
                     return false;
                 }
@@ -43,7 +43,7 @@ namespace XCScript.Functions.Logical
             return true; // All arguments true
         }
 
-        public static bool Or(IArgument[] args, Dictionary<string, object> glob)
+        public static bool Or(IArgument[] args, Engine context)
         {
             if (args.Length < 2)
             {
@@ -51,7 +51,7 @@ namespace XCScript.Functions.Logical
             }
             foreach (var arg in args)
             {
-                if (Get(arg.Evaluate(glob)))
+                if (Get(arg.Evaluate(context)))
                 {
                     return true;
                 }
@@ -59,7 +59,7 @@ namespace XCScript.Functions.Logical
             return false; // All false
         }
 
-        public static Tuple<bool, bool> Get(IArgument[] args, Dictionary<string, object> glob)
+        public static Tuple<bool, bool> Get(IArgument[] args, Engine context)
         {
             if (args.Length < 2)
             {
@@ -67,12 +67,11 @@ namespace XCScript.Functions.Logical
             }
             else if (args.Length > 2)
             {
-                (glob[Engine.RKey] as Result)?
-                    .Messages.Add($"Logical operation called with {args.Length} arguments, first 2 will be used");
+                context.Log($"Logical operation called with {args.Length} arguments, first 2 will be used");
             }
 
-            var b0 = Get(args[0].Evaluate(glob));
-            var b1 = Get(args[1].Evaluate(glob));
+            var b0 = Get(args[0].Evaluate(context));
+            var b1 = Get(args[1].Evaluate(context));
             return new Tuple<bool, bool>(b0, b1);
         }
     }

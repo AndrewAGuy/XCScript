@@ -26,7 +26,7 @@ namespace XCScript.Functions.Plugins
                 context.Log($"'new' called with {arguments.Length} arguments, only first 2 will be used");
             }
 
-            var typename = arguments[0].Evaluate(context.Globals) as string;
+            var typename = arguments[0].Evaluate(context) as string;
             if (typename == null)
             {
                 throw new ArgumentTypeException("First argument to 'new' must be or evaluate to string");
@@ -35,14 +35,14 @@ namespace XCScript.Functions.Plugins
             var dict = new Dictionary<string, object>();
             if (arguments.Length > 1)
             {
-                var argdict = arguments[1].Evaluate(context.Globals) as Dictionary<string, IArgument>;
+                var argdict = arguments[1].Evaluate(context) as Dictionary<string, IArgument>;
                 if (argdict == null)
                 {
                     throw new ArgumentTypeException("'new' second argument must be a dictionary");
                 }
                 foreach (var arg in argdict)
                 {
-                    dict[arg.Key] = arg.Value.Evaluate(context.Globals);
+                    dict[arg.Key] = arg.Value.Evaluate(context);
                 }
             }
             return context.Plugins.Create(typename, dict);

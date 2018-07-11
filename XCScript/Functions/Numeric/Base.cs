@@ -27,22 +27,22 @@ namespace XCScript.Functions.Numeric
             }
         }
 
-        public static double Evaluate(IArgument[] args, Dictionary<string, object> glob, Func<double, double, double> func)
+        public static double Evaluate(IArgument[] args, Engine context, Func<double, double, double> func)
         {
             if (args.Length < 2)
             {
                 throw new ArgumentCountException("Numeric operations require at least 2 arguments");
             }
 
-            var val = Get(args[0].Evaluate(glob));
+            var val = Get(args[0].Evaluate(context));
             for (var i = 1; i < args.Length; ++i)
             {
-                val = func(val, Get(args[i].Evaluate(glob)));
+                val = func(val, Get(args[i].Evaluate(context)));
             }
             return val;
         }
 
-        public static Tuple<double, double> Get(IArgument[] args, Dictionary<string, object> glob, bool only2 = true)
+        public static Tuple<double, double> Get(IArgument[] args, Engine eng, bool only2 = true)
         {
             if (args.Length < 2)
             {
@@ -50,12 +50,11 @@ namespace XCScript.Functions.Numeric
             }
             else if (args.Length > 2 && only2)
             {
-                (glob[Engine.RKey] as Result)?
-                    .Messages.Add($"Numeric operation called with {args.Length} arguments, first 2 will be used");
+                eng.Log($"Numeric operation called with {args.Length} arguments, first 2 will be used");
             }
 
-            var d0 = Get(args[0].Evaluate(glob));
-            var d1 = Get(args[1].Evaluate(glob));
+            var d0 = Get(args[0].Evaluate(eng));
+            var d1 = Get(args[1].Evaluate(eng));
             return new Tuple<double, double>(d0, d1);
         }
     }

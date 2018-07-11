@@ -30,13 +30,13 @@ namespace XCScript.Functions.Plugins
                 context.Log($"'prop' called with {arguments.Length} arguments, only first 3 will be used");
             }
 
-            var plugin = arguments[0].Evaluate(context.Globals) as IPlugin;
+            var plugin = arguments[0].Evaluate(context) as IPlugin;
             if (plugin == null)
             {
                 throw new ArgumentTypeException("'prop' requires the first argument to be of type IPlugin");
             }
 
-            var arg1 = arguments[1].Evaluate(context.Globals);
+            var arg1 = arguments[1].Evaluate(context);
             if (arg1 is Dictionary<string, IArgument> dict)
             {
                 foreach (var kv in dict)
@@ -48,7 +48,7 @@ namespace XCScript.Functions.Plugins
                     }
                     else
                     {
-                        var res = prop.TrySetValue(kv.Value.Evaluate(context.Globals));
+                        var res = prop.TrySetValue(kv.Value.Evaluate(context));
                         if (!res.Success)
                         {
                             context.Log($"In property: '{kv.Key}' on object of type {plugin.GetType().FullName}" + res.Messages[0]);
@@ -71,7 +71,7 @@ namespace XCScript.Functions.Plugins
                     return prop.Value;
                 }
 
-                var res = prop.TrySetValue(arguments[2].Evaluate(context.Globals));
+                var res = prop.TrySetValue(arguments[2].Evaluate(context));
                 if (!res.Success)
                 {
                     context.Log($"In property: '{name}' on object of type {plugin.GetType().FullName} - " + res.Messages[0]);

@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace XCScript.Execution
+﻿namespace XCScript.Execution
 {
     internal interface IStatement
     {
-        void Execute(Dictionary<string, object> globals);
+        void Execute(Engine context);
     }
 }

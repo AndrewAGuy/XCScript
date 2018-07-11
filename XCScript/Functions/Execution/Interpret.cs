@@ -33,7 +33,7 @@ namespace XCScript.Functions.Execution
             {
                 return e;
             }
-            else if (arguments[0].Evaluate(context.Globals) is string s)
+            else if (arguments[0].Evaluate(context) is string s)
             {
                 CharSource source = null;
                 StreamReader file = null;

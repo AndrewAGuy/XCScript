@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using XCScript.Arguments;
 using XCScript.Functions;
 
@@ -11,14 +10,14 @@ namespace XCScript.Execution
 
         public IFunction Function { get; set; }
 
-        public object Evaluate(Dictionary<string, object> globals)
+        public object Evaluate(Engine context)
         {
-            return this.Function.Execute(this.Arguments.Evaluate(), globals);
+            return this.Function.Execute(this.Arguments.Evaluate(), context);
         }
 
-        public void Execute(Dictionary<string, object> globals)
+        public void Execute(Engine context)
         {
-            Evaluate(globals);
+            Evaluate(context);
         }
 
         public override string ToString()

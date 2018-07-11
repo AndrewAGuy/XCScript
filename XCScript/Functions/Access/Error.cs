@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using XCScript.Arguments;
+﻿using XCScript.Arguments;
 using XCScript.Functions.Exceptions;
 
 namespace XCScript.Functions.Access
@@ -14,7 +13,7 @@ namespace XCScript.Functions.Access
             }
         }
 
-        public object Execute(IArgument[] arguments, Dictionary<string, object> globals)
+        public object Execute(IArgument[] arguments, Engine context)
         {
             if (arguments.Length == 0)
             {
@@ -22,18 +21,17 @@ namespace XCScript.Functions.Access
             }
             else if (arguments.Length > 1)
             {
-                var res = globals[Engine.RKey] as Result;
-                res.Messages.Add($"'err' called with {arguments.Length} arguments, only first will be used");
+                context.Log($"'err' called with {arguments.Length} arguments, only first will be used");
             }
             
-            if (arguments[0].Evaluate(globals) is string s)
+            if (arguments[0].Evaluate(context) is string s)
             {
-                (globals[Engine.RKey] as Result)?.Messages.Add(s);
+                context.Log(s, -1);
                 return s;
             }
             else
             {
-                throw new ArgumentTypeException($"'error' requires argument evaluation of type {typeof(string).FullName}");
+                throw new ArgumentTypeException($"'err' requires argument evaluation of type {typeof(string).FullName}");
             }
         }
     }

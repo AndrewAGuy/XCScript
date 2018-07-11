@@ -18,12 +18,12 @@ namespace XCScript.Execution
         /// <summary>
         /// Evaluate each statement in the current context
         /// </summary>
-        /// <param name="globals"></param>
-        public void Execute(Dictionary<string, object> globals)
+        /// <param name="context"></param>
+        public void Execute(Engine context)
         {
             foreach (var statement in statements)
             {
-                statement.Execute(globals);
+                statement.Execute(context);
             }
         }
 

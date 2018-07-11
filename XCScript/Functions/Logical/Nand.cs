@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using XCScript.Arguments;
+﻿using XCScript.Arguments;
 
 namespace XCScript.Functions.Logical
 {
@@ -13,9 +12,9 @@ namespace XCScript.Functions.Logical
             }
         }
 
-        public object Execute(IArgument[] arguments, Dictionary<string, object> globals)
+        public object Execute(IArgument[] arguments, Engine context)
         {
-            return !Base.And(arguments, globals);
+            return !Base.And(arguments, context);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using XCScript.Arguments;
 
@@ -10,12 +9,12 @@ namespace XCScript.Execution
         public IArgument[] From { get; set; }
         public string[] To { get; set; }
 
-        public void Execute(Dictionary<string, object> globals)
+        public void Execute(Engine context)
         {
             var length = Math.Min(this.From.Length, this.To.Length);
             for (var i = 0; i < length; ++i)
             {
-                globals[this.To[i]] = this.From[i].Evaluate(globals);
+                context.Globals[this.To[i]] = this.From[i].Evaluate(context);
             }
         }
 
