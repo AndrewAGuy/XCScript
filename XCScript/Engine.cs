@@ -58,60 +58,18 @@ namespace XCScript
         /// <returns></returns>
         public override string ToString()
         {
-            return typeof(Engine).FullName + ": " + this.Name;
+            return typeof(Engine).FullName + (!string.IsNullOrWhiteSpace(this.Name) ? $": {this.Name}" : "");
         }
 
         private readonly Dictionary<string, object> globals = new Dictionary<string, object>();
         private readonly Dictionary<string, IFunction> functions = new Dictionary<string, IFunction>();
-        private readonly Result result = new Result();
         private readonly Manager plugins = new Manager();
-
-        /// <summary>
-        /// Key for <see cref="Functions"/> in <see cref="Globals"/>
-        /// </summary>
-        public static string FKey
-        {
-            get
-            {
-                return "/f";
-            }
-        }
-
-        /// <summary>
-        /// Key for <see cref="Result"/> in <see cref="Globals"/>
-        /// </summary>
-        public static string RKey
-        {
-            get
-            {
-                return "/r";
-            }
-        }
-
-        /// <summary>
-        /// Key for <see cref="Plugins"/> in <see cref="Globals"/>
-        /// </summary>
-        public static string PKey
-        {
-            get
-            {
-                return "/p";
-            }
-        }
-
-        private void AddDefaults()
-        {
-            globals[FKey] = functions;
-            globals[PKey] = plugins;
-            globals[RKey] = result;
-        }
 
         /// <summary>
         /// 
         /// </summary>
         public Engine(bool loadAll)
         {
-            AddDefaults();
             if (loadAll)
             {
                 LoadAssembly(typeof(Engine).Assembly);
@@ -123,7 +81,6 @@ namespace XCScript
         /// </summary>
         public Engine(LoadingOptions opt)
         {
-            AddDefaults();
             if (opt != null)
             {
                 var funcs = new List<IFunction>();
@@ -218,7 +175,7 @@ namespace XCScript
         }
 
         /// <summary>
-        /// Loaded functions. Stored in <see cref="Globals"/> as <see cref="FKey"/>
+        /// Loaded functions
         /// </summary>
         public Dictionary<string, IFunction> Functions
         {
@@ -229,18 +186,7 @@ namespace XCScript
         }
 
         /// <summary>
-        /// Execution result. Stored in <see cref="Globals"/> as <see cref="RKey"/>
-        /// </summary>
-        public Result Result
-        {
-            get
-            {
-                return result;
-            }
-        }
-
-        /// <summary>
-        /// Plugin type manager. Stored in <see cref="Globals"/> as <see cref="PKey"/>
+        /// Plugin type manager
         /// </summary>
         public Manager Plugins
         {
@@ -344,7 +290,6 @@ namespace XCScript
         /// <returns></returns>
         public Result Execute(string data, bool isPath = false)
         {
-            result.Reset();
             var res = isPath ? InterpretFile(data, out var exec) : InterpretString(data, out exec);
             if (!res.Success)
             {
@@ -360,7 +305,7 @@ namespace XCScript
                 res = new Result(false, $"Caught {e.GetType().Name}: {e.Message}");
             }
             // Get warnings
-            return res.Append(result);
+            return res;
         }
 
         /// <summary>
