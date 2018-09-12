@@ -33,6 +33,21 @@ namespace XCScript
         public delegate void LogHandler(object src, string msg, int code, DateTime time);
 
         /// <summary>
+        /// 
+        /// </summary>
+        public static int Error => -1;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static int Warning => 1;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static int Information => 0;
+
+        /// <summary>
         /// The message logging event
         /// </summary>
         public event LogHandler LogEvent;
@@ -42,9 +57,18 @@ namespace XCScript
         /// </summary>
         /// <param name="msg"></param>
         /// <param name="code"></param>
-        public void Log(string msg, int code = 0)
+        public void Log(string msg, int code)
         {
             LogEvent?.Invoke(this, msg, code, DateTime.Now);
+        }
+
+        /// <summary>
+        /// Default with code provided by <see cref="Information"/>
+        /// </summary>
+        /// <param name="msg"></param>
+        public void Log(string msg)
+        {
+            Log(msg, Information);
         }
 
         /// <summary>
@@ -196,9 +220,9 @@ namespace XCScript
             }
         }
 
-        private Result LoadFunctions(Assembly assy)
+        private bool LoadFunctions(Assembly assy)
         {
-            var res = new Result();
+            var res = true;
             var valid = assy.DefinedTypes.Where(t => typeof(IFunction).IsAssignableFrom(t) && !t.IsInterface);
             foreach (var vt in valid)
             {
@@ -211,13 +235,13 @@ namespace XCScript
                     }
                     else
                     {
-                        res.Messages.Add($"Function with keyword: {inst.Keyword} already exists");
+                        Log($"Function with keyword: {inst.Keyword} already exists", Warning);
                     }
                 }
                 catch (Exception e)
                 {
-                    res.Success = false;
-                    res.Messages.Add($"Failed to instantiate: {vt.FullName}, threw {e.GetType().FullName}");
+                    res = false;
+                    Log($"Failed to instantiate: {vt.FullName}, threw {e.GetType().FullName}", Error);
                 }
             }
             return res;
@@ -229,9 +253,8 @@ namespace XCScript
         /// <param name="path"></param>
         /// <param name="executable"></param>
         /// <returns></returns>
-        public Result InterpretFile(string path, out Executable executable)
+        public bool InterpretFile(string path, out Executable executable)
         {
-            var res = new Result();
             CharSource source = null;
             StreamReader text = null;
             executable = null;
@@ -240,15 +263,17 @@ namespace XCScript
                 text = File.OpenText(path);
                 source = new CharSource(text);
                 executable = Evaluatable.Parse(source, functions);
-                return new Result();
+                return true;
             }
             catch (ParsingException p)
             {
-                return new Result(false, $"Caught {p.GetType().Name} in '{path}' at line {source.Line}: {p.Message}");
+                Log($"Caught {p.GetType().Name} in '{path}' at line {source.Line}: {p.Message}", Error);
+                return false;
             }
             catch (Exception e)
             {
-                return new Result(false, $"Caught {e.GetType().Name}: {e.Message}");
+                Log($"Caught {e.GetType().Name}: {e.Message}", Error);
+                return false;
             }
             finally
             {
@@ -262,23 +287,24 @@ namespace XCScript
         /// <param name="text"></param>
         /// <param name="executable"></param>
         /// <returns></returns>
-        public Result InterpretString(string text, out Executable executable)
+        public bool InterpretString(string text, out Executable executable)
         {
-            var res = new Result();
             var source = new CharSource(new StringReader(text));
             executable = null;
             try
             {
                 executable = Evaluatable.Parse(source, functions);
-                return new Result();
+                return true;
             }
             catch (ParsingException p)
             {
-                return new Result(false, $"Caught {p.GetType().Name} at line {source.Line}: {p.Message}");
+                Log($"Caught {p.GetType().Name} at line {source.Line}: {p.Message}", Error);
+                return false;
             }
             catch (Exception e)
             {
-                return new Result(false, $"Caught {e.GetType().Name}: {e.Message}");
+                Log($"Caught {e.GetType().Name}: {e.Message}", Error);
+                return false;
             }
         }
 
@@ -288,12 +314,11 @@ namespace XCScript
         /// <param name="data"></param>
         /// <param name="isPath"></param>
         /// <returns></returns>
-        public Result Execute(string data, bool isPath = false)
+        public bool Execute(string data, bool isPath = false)
         {
-            var res = isPath ? InterpretFile(data, out var exec) : InterpretString(data, out exec);
-            if (!res.Success)
+            if (!(isPath ? InterpretFile(data, out var exec) : InterpretString(data, out exec)))
             {
-                return res;
+                return false;
             }
 
             try
@@ -302,10 +327,10 @@ namespace XCScript
             }
             catch (ExecutionException e)
             {
-                res = new Result(false, $"Caught {e.GetType().Name}: {e.Message}");
+                Log($"Caught {e.GetType().Name}: {e.Message}", Error);
+                return false;
             }
-            // Get warnings
-            return res;
+            return true;
         }
 
         /// <summary>
@@ -313,7 +338,7 @@ namespace XCScript
         /// </summary>
         /// <param name="assy"></param>
         /// <returns></returns>
-        public Result LoadAssembly(Assembly assy)
+        public bool LoadAssembly(Assembly assy)
         {
             plugins.FromAssembly(assy);
             return LoadFunctions(assy);
@@ -324,7 +349,7 @@ namespace XCScript
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public Result LoadFile(string path)
+        public bool LoadFile(string path)
         {
             try
             {
@@ -333,8 +358,8 @@ namespace XCScript
             }
             catch (Exception e)
             {
-                return new Result(false, "Could not load " + path
-                    + ", failed with " + e.GetType().Name + ": " + e.Message);
+                Log($"Could not load '{path}', failed with {e.GetType().Name}: {e.Message}", Error);
+                return false;
             }
         }
 
@@ -343,23 +368,24 @@ namespace XCScript
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public Result LoadDirectory(string path)
+        public bool LoadDirectory(string path)
         {
             if (!Directory.Exists(path))
             {
-                return new Result(false, "No such directory: " + path);
+                Log($"No such directory: {path}", Warning);
+                return false;
             }
             var dlls = Directory.GetFiles(path).Where(f => Path.GetExtension(f).ToLower() == ".dll");
             if (dlls.Count() == 0)
             {
-                return new Result();
+                return true;
             }
 
             // Success is conserved, so any good load will convert this to true
-            var res = new Result() { Success = false };
+            var res = false;
             foreach (var p in dlls)
             {
-                res.Append(LoadFile(p));
+                res |= LoadFile(p);
             }
 
             return res;
