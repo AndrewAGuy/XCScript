@@ -20,7 +20,7 @@ namespace XCScript.Functions.Text
             {
                 str.Append(arg.Evaluate(context).ToString());
             }
-            return str;
+            return str.ToString();
         }
     }
 }

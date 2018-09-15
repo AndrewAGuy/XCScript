@@ -22,15 +22,6 @@
         }
 
         /// <summary>
-        /// Even shorter cut for getters
-        /// </summary>
-        /// <param name="op"></param>
-        public static implicit operator T(ObjectProperty<T> op)
-        {
-            return op.value;
-        }
-
-        /// <summary>
         /// Shortcut for consumers
         /// </summary>
         public new T Data

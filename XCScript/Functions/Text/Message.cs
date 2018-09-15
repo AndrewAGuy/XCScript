@@ -13,7 +13,7 @@ namespace XCScript.Functions.Text
             }
         }
 
-        private Dictionary<string, int> codes = new Dictionary<string, int>()
+        private static Dictionary<string, int> codes = new Dictionary<string, int>()
         {
             { "information", Engine.Information },
             { "info", Engine.Information },

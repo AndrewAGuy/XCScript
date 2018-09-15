@@ -23,6 +23,15 @@
         }
 
         /// <summary>
+        /// Even shorter cut for getters
+        /// </summary>
+        /// <param name="op"></param>
+        public static implicit operator T(PropertyBase<T> op)
+        {
+            return op.value;
+        }
+
+        /// <summary>
         /// General purpose access (scripting context)
         /// </summary>
         public object Value
