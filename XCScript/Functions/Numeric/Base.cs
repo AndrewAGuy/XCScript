@@ -50,7 +50,7 @@ namespace XCScript.Functions.Numeric
             }
             else if (args.Length > 2 && only2)
             {
-                eng.Log($"Numeric operation called with {args.Length} arguments, first 2 will be used");
+                eng.Log($"Numeric operation called with {args.Length} arguments, first 2 will be used", Engine.Warning);
             }
 
             var d0 = Get(args[0].Evaluate(eng));

@@ -35,7 +35,7 @@ namespace XCScript.Functions.Access
         {
             if (arguments.Length == 0)
             {
-                context.Log($"'del' called with 0 targets");
+                context.Log($"'del' called with 0 targets", Engine.Warning);
             }
             DeleteArray(arguments, context);
             return null;

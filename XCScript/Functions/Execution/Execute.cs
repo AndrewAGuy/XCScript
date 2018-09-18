@@ -26,7 +26,7 @@ namespace XCScript.Functions.Execution
             }
             else if (arguments.Length > 1)
             {
-               context.Log($"'exec' called with {arguments.Length} arguments, only first will be used");
+               context.Log($"'exec' called with {arguments.Length} arguments, only first will be used", Engine.Warning);
             }
 
             switch (arguments[0].Evaluate(context))

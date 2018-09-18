@@ -21,7 +21,7 @@ namespace XCScript.Functions.Control
             }
             else if (arguments.Length > 2)
             {
-                context.Log($"'until' called with {arguments.Length} arguments, only first 2 will be used");
+                context.Log($"'until' called with {arguments.Length} arguments, only first 2 will be used", Engine.Warning);
             }
 
             object obj = null;

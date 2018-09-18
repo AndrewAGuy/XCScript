@@ -113,7 +113,6 @@ namespace XCScript
                     funcs.AddRange(new IFunction[]
                     {
                         new Delete(),
-                        new Error(),
                         new Index(),
                         new Map()
                     });

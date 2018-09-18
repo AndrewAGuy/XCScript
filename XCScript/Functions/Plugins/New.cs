@@ -23,7 +23,7 @@ namespace XCScript.Functions.Plugins
             }
             else if (arguments.Length > 2)
             {
-                context.Log($"'new' called with {arguments.Length} arguments, only first 2 will be used");
+                context.Log($"'new' called with {arguments.Length} arguments, only first 2 will be used", Engine.Warning);
             }
 
             var typename = arguments[0].Evaluate(context) as string;

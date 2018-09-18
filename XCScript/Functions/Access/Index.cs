@@ -42,7 +42,7 @@ namespace XCScript.Functions.Access
             }
             else if (arguments.Length > 3)
             {
-                context.Log($"'index' called with {arguments.Length} arguments, only first 3 will be used");
+                context.Log($"'index' called with {arguments.Length} arguments, only first 3 will be used", Engine.Warning);
             }
 
             var array = arguments[0].Evaluate(context) as object[];

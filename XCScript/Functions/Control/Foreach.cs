@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections;
 using XCScript.Arguments;
 using XCScript.Functions.Exceptions;
 
@@ -21,7 +21,7 @@ namespace XCScript.Functions.Control
                 throw new ArgumentCountException("Foreach requires at least 3 arguments: values, name, statement");
             }
 
-            if (!(arguments[0].Evaluate(context) is Array arr))
+            if (!(arguments[0].Evaluate(context) is IEnumerable arr))
             {
                 throw new ArgumentTypeException("Foreach requires array as first argument");
             }

@@ -27,7 +27,7 @@ namespace XCScript.Functions.Plugins
             }
             else if (arguments.Length > 3)
             {
-                context.Log($"'prop' called with {arguments.Length} arguments, only first 3 will be used");
+                context.Log($"'prop' called with {arguments.Length} arguments, only first 3 will be used", Engine.Warning);
             }
 
             var plugin = arguments[0].Evaluate(context) as IPlugin;
@@ -44,14 +44,14 @@ namespace XCScript.Functions.Plugins
                     var prop = plugin[kv.Key];
                     if (prop == null)
                     {
-                        context.Log($"No such property: '{kv.Key}' on object of type {plugin.GetType().FullName}");
+                        context.Log($"No such property: '{kv.Key}' on object of type {plugin.GetType().FullName}", Engine.Warning);
                     }
                     else
                     {
                         var res = prop.TrySetValue(kv.Value.Evaluate(context));
                         if (!res.Success)
                         {
-                            context.Log($"In property: '{kv.Key}' on object of type {plugin.GetType().FullName}" + res.Messages[0]);
+                            context.Log($"In property: '{kv.Key}' on object of type {plugin.GetType().FullName} - " + res.Messages[0], Engine.Warning);
                         }
                     }
                 }
@@ -62,7 +62,7 @@ namespace XCScript.Functions.Plugins
                 var prop = plugin[name];
                 if (prop == null)
                 {
-                    context.Log($"No such property: '{name}' on object of type {plugin.GetType().FullName}");
+                    context.Log($"No such property: '{name}' on object of type {plugin.GetType().FullName}", Engine.Warning);
                     return null;
                 }
 
@@ -74,7 +74,7 @@ namespace XCScript.Functions.Plugins
                 var res = prop.TrySetValue(arguments[2].Evaluate(context));
                 if (!res.Success)
                 {
-                    context.Log($"In property: '{name}' on object of type {plugin.GetType().FullName} - " + res.Messages[0]);
+                    context.Log($"In property: '{name}' on object of type {plugin.GetType().FullName} - " + res.Messages[0], Engine.Warning);
                 }
                 return plugin;
             }

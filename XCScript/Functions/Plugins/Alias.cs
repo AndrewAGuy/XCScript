@@ -22,7 +22,7 @@ namespace XCScript.Functions.Plugins
             }
             else if (arguments.Length > 2)
             {
-                context.Log($"'alias' called with {arguments.Length} arguments, only first 2 will be used");
+                context.Log($"'alias' called with {arguments.Length} arguments, only first 2 will be used", Engine.Warning);
             }
             
             if (arguments.Length == 1)

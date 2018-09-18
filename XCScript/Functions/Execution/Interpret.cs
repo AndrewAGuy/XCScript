@@ -26,7 +26,7 @@ namespace XCScript.Functions.Execution
             }
             else if (arguments.Length > 1)
             {
-                context.Log($"'interp' called with {arguments.Length} arguments, only first will be used");
+                context.Log($"'interp' called with {arguments.Length} arguments, only first will be used", Engine.Warning);
             }
 
             if (arguments[0].Literal is Executable e)

@@ -22,7 +22,7 @@ namespace XCScript.Functions.Access
             }
             else if (arguments.Length > 3)
             {
-                context.Log($"'map' called with {arguments.Length} arguments, only first 3 will be used");
+                context.Log($"'map' called with {arguments.Length} arguments, only first 3 will be used", Engine.Warning);
             }
 
             var dict = arguments[0].Evaluate(context) as Dictionary<string, object>;

@@ -21,7 +21,7 @@ namespace XCScript.Functions.Logical
             }
             else if (arguments.Length > 1)
             {
-                context.Log($"'not' called with {arguments.Length} arguments, first will be used");
+                context.Log($"'not' called with {arguments.Length} arguments, first will be used", Engine.Warning);
             }
 
             return !Base.Get(arguments[0].Evaluate(context));

@@ -21,7 +21,7 @@ namespace XCScript.Functions.Control
             }
             if (arguments.Length > 3)
             {
-                context.Log($"'if' called with {arguments.Length} arguments, only first 3 will be used");
+                context.Log($"'if' called with {arguments.Length} arguments, only first 3 will be used", Engine.Warning);
             }
 
             if (Logical.Base.Get(arguments[0].Evaluate(context)))

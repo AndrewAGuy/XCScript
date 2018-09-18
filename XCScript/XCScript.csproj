@@ -55,8 +55,8 @@
     <Compile Include="Arguments\StringLiteral.cs" />
     <Compile Include="Arguments\TypeNameLiteral.cs" />
     <Compile Include="Functions\Access\Delete.cs" />
-    <Compile Include="Functions\Access\Error.cs" />
     <Compile Include="Functions\Access\Index.cs" />
+    <Compile Include="Functions\Access\List.cs" />
     <Compile Include="Functions\Access\Map.cs" />
     <Compile Include="Functions\Control\Do.cs" />
     <Compile Include="Functions\Control\Foreach.cs" />

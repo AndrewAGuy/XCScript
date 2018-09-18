@@ -67,7 +67,7 @@ namespace XCScript.Functions.Logical
             }
             else if (args.Length > 2)
             {
-                context.Log($"Logical operation called with {args.Length} arguments, first 2 will be used");
+                context.Log($"Logical operation called with {args.Length} arguments, first 2 will be used", Engine.Warning);
             }
 
             var b0 = Get(args[0].Evaluate(context));

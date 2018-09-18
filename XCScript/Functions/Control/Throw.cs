@@ -19,7 +19,7 @@ namespace XCScript.Functions.Control
             {
                 if (arguments.Length > 1)
                 {
-                    context.Log($"'throw' called with {arguments.Length} arguments, only first will be used");
+                    context.Log($"'throw' called with {arguments.Length} arguments, only first will be used", Engine.Warning);
                 }
                 throw new ExecutionException(arguments[0].Evaluate(context).ToString());
             }
