@@ -84,14 +84,24 @@ namespace XCScript
         private readonly Manager plugins = new Manager();
 
         /// <summary>
+        /// Allows users to attach arbitrary, fast-access data for use in functions, if program structure is fixed.
+        /// </summary>
+        public object[] Data { get; private set; } = null;
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="loadAll"></param>
-        public Engine(bool loadAll)
+        /// <param name="dataItems"></param>
+        public Engine(bool loadAll = true, int dataItems = 0)
         {
             if (loadAll)
             {
                 LoadAssembly(typeof(Engine).Assembly);
+            }
+            if (dataItems > 0)
+            {
+                this.Data = new object[dataItems];
             }
         }
 
