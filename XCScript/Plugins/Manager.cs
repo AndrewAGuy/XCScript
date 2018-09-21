@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace XCScript.Plugins
@@ -12,17 +11,35 @@ namespace XCScript.Plugins
     {
         private readonly Dictionary<string, Type> types = new Dictionary<string, Type>();
 
+        private bool IsValidType(Type t)
+        {
+            return typeof(IPlugin).IsAssignableFrom(t) && !t.IsInterface;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="t"></param>
+        public bool TryAdd(Type t)
+        {
+            if (IsValidType(t))
+            {
+                types[t.FullName] = t;
+                types[t.Name] = t;
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Loads all types in the assembly that are <see cref="IPlugin"/> implementations
         /// </summary>
         /// <param name="assy"></param>
         public void FromAssembly(Assembly assy)
         {
-            var valid = assy.DefinedTypes.Where(t => typeof(IPlugin).IsAssignableFrom(t) && !t.IsInterface);
-            foreach (var vt in valid)
+            foreach (var t in assy.DefinedTypes)
             {
-                types[vt.FullName] = vt;
-                types[vt.Name] = vt;
+                TryAdd(t);
             }
         }
 

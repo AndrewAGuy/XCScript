@@ -77,7 +77,6 @@
     <Compile Include="Execution\Executable.cs" />
     <Compile Include="Execution\FunctionCall.cs" />
     <Compile Include="Execution\IStatement.cs" />
-    <Compile Include="Functions\LoadingOptions.cs" />
     <Compile Include="Functions\Logical\And.cs" />
     <Compile Include="Functions\Logical\Base.cs" />
     <Compile Include="Functions\Logical\Nand.cs" />

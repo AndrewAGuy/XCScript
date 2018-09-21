@@ -5,13 +5,7 @@ using System.Linq;
 using System.Reflection;
 using XCScript.Execution;
 using XCScript.Functions;
-using XCScript.Functions.Access;
-using XCScript.Functions.Control;
 using XCScript.Functions.Exceptions;
-using XCScript.Functions.Execution;
-using XCScript.Functions.Logical;
-using XCScript.Functions.Numeric;
-using XCScript.Functions.Plugins;
 using XCScript.Parsing;
 using XCScript.Parsing.Exceptions;
 using XCScript.Plugins;
@@ -92,6 +86,7 @@ namespace XCScript
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="loadAll"></param>
         public Engine(bool loadAll)
         {
             if (loadAll)
@@ -103,86 +98,21 @@ namespace XCScript
         /// <summary>
         /// 
         /// </summary>
-        public Engine(LoadingOptions opt)
+        /// <param name="func"></param>
+        public void LoadFunction(IFunction func)
         {
-            if (opt != null)
+            functions[func.Keyword] = func;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="funcs"></param>
+        public void LoadFunctions(IEnumerable<IFunction> funcs)
+        {
+            foreach (var func in funcs)
             {
-                var funcs = new List<IFunction>();
-                if (opt.Access)
-                {
-                    funcs.AddRange(new IFunction[]
-                    {
-                        new Delete(),
-                        new Index(),
-                        new Map()
-                    });
-                }
-                if (opt.Control)
-                {
-                    funcs.AddRange(new IFunction[]
-                    {
-                        new Do(),
-                        new Foreach(),
-                        new If(),
-                        new Throw(),
-                        new Until(),
-                        new While()
-                    });
-                }
-                if (opt.Execution)
-                {
-                    funcs.AddRange(new IFunction[]
-                    {
-                        new Execute(),
-                        new Interpret()
-                    });
-                }
-                if (opt.Plugins)
-                {
-                    funcs.AddRange(new IFunction[]
-                    {
-                        new Alias(),
-                        new New(),
-                        new Property()
-                    });
-                }
-                if (opt.Numeric)
-                {
-                    funcs.AddRange(new IFunction[]
-                    {
-                        new Add(),
-                        new ConstantE(),
-                        new ConstantPi(),
-                        new Divide(),
-                        new Equal(),
-                        new Greater(),
-                        new GreaterEqual(),
-                        new Less(),
-                        new LessEqual(),
-                        new Logarithm(),
-                        new Multiply(),
-                        new NotEqual(),
-                        new Power(),
-                        new Subtract()
-                    });
-                }
-                if (opt.Logical)
-                {
-                    funcs.AddRange(new IFunction[]
-                    {
-                        new And(),
-                        new Nand(),
-                        new Nor(),
-                        new Not(),
-                        new Or(),
-                        new Xnor(),
-                        new Xor()
-                    });
-                }
-                foreach (var f in funcs)
-                {
-                    functions[f.Keyword] = f;
-                }
+                LoadFunction(func);
             }
         }
 
