@@ -17,6 +17,11 @@
             return this.Value;
         }
 
+        public object EvaluateChildren(Engine context)
+        {
+            return this.Value;
+        }
+
         public override string ToString()
         {
             return this.Value.ToString();

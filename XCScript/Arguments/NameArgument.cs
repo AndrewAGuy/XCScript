@@ -17,6 +17,11 @@
             return context.Globals.TryGetValue(this.Value, out var val) ? val : null;
         }
 
+        public object EvaluateChildren(Engine context)
+        {
+            return context.Globals.TryGetValue(this.Value, out var val) ? val : null;
+        }
+
         public override string ToString()
         {
             return this.Value;

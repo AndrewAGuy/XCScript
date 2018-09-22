@@ -48,6 +48,7 @@
     <Compile Include="Arguments\DictionaryLiteral.cs" />
     <Compile Include="Arguments\DoubleLiteral.cs" />
     <Compile Include="Arguments\ExecutableArgument.cs" />
+    <Compile Include="Arguments\Extensions.cs" />
     <Compile Include="Arguments\FunctionArgument.cs" />
     <Compile Include="Arguments\IArgument.cs" />
     <Compile Include="Arguments\IntegerLiteral.cs" />

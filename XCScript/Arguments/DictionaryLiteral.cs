@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace XCScript.Arguments
@@ -33,6 +34,16 @@ namespace XCScript.Arguments
                 str.Append(kv.Key).Append(" = ").Append(kv.Value.ToString()).Append(", ");
             }
             return str.Remove(str.Length - 2, 2).Append(" }").ToString();
+        }
+
+        public object EvaluateChildren(Engine context)
+        {
+            var dict = new Dictionary<string, object>();
+            foreach (var kv in args)
+            {
+                dict[kv.Key] = kv.Value.EvaluateChildren(context);
+            }
+            return dict;
         }
     }
 }

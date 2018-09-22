@@ -20,6 +20,11 @@ namespace XCScript.Arguments
             return this.Value;
         }
 
+        public object EvaluateChildren(Engine context)
+        {
+            return this.Value;
+        }
+
         public override string ToString()
         {
             var str = new StringBuilder().Append('"');

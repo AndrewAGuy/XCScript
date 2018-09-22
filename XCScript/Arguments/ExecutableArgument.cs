@@ -21,6 +21,12 @@ namespace XCScript.Arguments
             return null;
         }
 
+        public object EvaluateChildren(Engine context)
+        {
+            this.Value.Execute(context);
+            return null;
+        }
+
         public override string ToString()
         {
             return new StringBuilder().Append('<')

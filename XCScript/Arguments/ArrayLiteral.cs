@@ -25,6 +25,16 @@ namespace XCScript.Arguments
             return args.ToArray();
         }
 
+        public object EvaluateChildren(Engine context)
+        {
+            var array = new object[args.Count];
+            for (var i = 0; i < args.Count; ++i)
+            {
+                array[i] = args[i].EvaluateChildren(context);
+            }
+            return array;
+        }
+
         public override string ToString()
         {
             var str = new StringBuilder().Append("[ ");

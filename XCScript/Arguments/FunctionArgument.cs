@@ -20,6 +20,11 @@ namespace XCScript.Arguments
             return this.Call.Evaluate(context);
         }
 
+        public object EvaluateChildren(Engine context)
+        {
+            return this.Call.Evaluate(context);
+        }
+
         public override string ToString()
         {
             return '(' + this.Call.ToString() + ')';
