@@ -329,5 +329,45 @@ namespace XCScript
 
             return res;
         }
+
+        /// <summary>
+        /// Indexer to user data
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public object this[int i]
+        {
+            get
+            {
+                return i >= 0 && i < this.Data.Length ? this.Data[i] : null;
+            }
+            set
+            {
+                if (i >= 0 && i < this.Data.Length)
+                {
+                    this.Data[i] = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Indexer to globals
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public object this[string s]
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(s) && globals.TryGetValue(s, out var value) ? value : null;
+            }
+            set
+            {
+                if (!string.IsNullOrWhiteSpace(s))
+                {
+                    globals[s] = value;
+                }
+            }
+        }
     }
 }
