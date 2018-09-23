@@ -23,7 +23,7 @@ namespace XCScript.Functions.Numeric
 
             if (arguments.Length == 1)
             {
-                return Math.Log(Base.Get(arguments[0].Evaluate(context)));
+                return Math.Log(arguments[0].ToDouble(context));
             }
             else
             {

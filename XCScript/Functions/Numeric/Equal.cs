@@ -20,7 +20,7 @@ namespace XCScript.Functions.Numeric
         {
             if (arguments.Length == 1)
             {
-                tolerance = Base.Get(arguments[0].Evaluate(context));
+                tolerance = arguments[0].ToDouble(context);
                 return null;
             }
             else
@@ -28,7 +28,7 @@ namespace XCScript.Functions.Numeric
                 var tup = Base.Get(arguments, context, false);
                 if (arguments.Length > 2)
                 {
-                    return Math.Abs(tup.Item1 - tup.Item2) <= Base.Get(arguments[2].Evaluate(context));
+                    return Math.Abs(tup.Item1 - tup.Item2) <= arguments[2].ToDouble(context);
                 }
                 else
                 {

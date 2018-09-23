@@ -25,7 +25,7 @@ namespace XCScript.Functions.Control
             }
 
             object obj = null;
-            while (Logical.Base.Get(arguments[0].Evaluate(context)))
+            while (arguments[0].ToBool(context))
             {
                 obj = arguments[1].Evaluate(context);
             }

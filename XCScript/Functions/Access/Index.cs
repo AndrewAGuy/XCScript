@@ -6,26 +6,6 @@ namespace XCScript.Functions.Access
 {
     internal class Index : IFunction
     {
-        public static int Get(object o)
-        {
-            switch (o)
-            {
-                case int i:
-                    return i;
-                case double d:
-                    return (int)d;
-                case float f:
-                    return (int)f;
-                default:
-                    var s = o.ToString();
-                    if (!int.TryParse(s, out var v))
-                    {
-                        throw new ArgumentTypeException($"Cannot convert to int ({o.GetType().FullName}): {s}");
-                    }
-                    return v;
-            }
-        }
-
         public string Keyword
         {
             get
@@ -46,7 +26,7 @@ namespace XCScript.Functions.Access
             }
 
             var array = arguments[0].Evaluate(context) as object[];
-            var index = Get(arguments[1].Evaluate(context));
+            var index = arguments[1].ToInt(context);
             if (arguments.Length < 3)
             {
                 return array[index];

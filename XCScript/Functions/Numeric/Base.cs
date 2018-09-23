@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using XCScript.Arguments;
 using XCScript.Functions.Exceptions;
 
@@ -7,26 +6,6 @@ namespace XCScript.Functions.Numeric
 {
     internal static class Base
     {
-        public static double Get(object o)
-        {
-            switch (o)
-            {
-                case double d:
-                    return d;
-                case int i:
-                    return i;
-                case float f:
-                    return f;
-                default:
-                    var s = o.ToString();
-                    if (!double.TryParse(s, out var v))
-                    {
-                        throw new ArgumentTypeException($"Cannot convert to double ({o.GetType().FullName}): {s}");
-                    }
-                    return v;
-            }
-        }
-
         public static double Evaluate(IArgument[] args, Engine context, Func<double, double, double> func)
         {
             if (args.Length < 2)
@@ -34,10 +13,10 @@ namespace XCScript.Functions.Numeric
                 throw new ArgumentCountException("Numeric operations require at least 2 arguments");
             }
 
-            var val = Get(args[0].Evaluate(context));
+            var val = args[0].ToDouble(context);
             for (var i = 1; i < args.Length; ++i)
             {
-                val = func(val, Get(args[i].Evaluate(context)));
+                val = func(val, args[i].ToDouble(context));
             }
             return val;
         }
@@ -53,8 +32,8 @@ namespace XCScript.Functions.Numeric
                 eng.Log($"Numeric operation called with {args.Length} arguments, first 2 will be used", Engine.Warning);
             }
 
-            var d0 = Get(args[0].Evaluate(eng));
-            var d1 = Get(args[1].Evaluate(eng));
+            var d0 = args[0].ToDouble(eng);
+            var d1 = args[1].ToDouble(eng);
             return new Tuple<double, double>(d0, d1);
         }
     }

@@ -24,7 +24,7 @@ namespace XCScript.Functions.Control
                 context.Log($"'if' called with {arguments.Length} arguments, only first 3 will be used", Engine.Warning);
             }
 
-            if (Logical.Base.Get(arguments[0].Evaluate(context)))
+            if (arguments[0].ToBool(context))
             {
                 return arguments[1].Evaluate(context);
             }

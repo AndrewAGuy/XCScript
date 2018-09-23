@@ -28,7 +28,7 @@ namespace XCScript.Functions.Control
             do
             {
                 obj = arguments[1].Evaluate(context);
-            } while (Logical.Base.Get(arguments[0].Evaluate(context)));
+            } while (arguments[0].ToBool(context));
             return obj;
         }
     }

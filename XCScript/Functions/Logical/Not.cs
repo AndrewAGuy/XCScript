@@ -24,7 +24,7 @@ namespace XCScript.Functions.Logical
                 context.Log($"'not' called with {arguments.Length} arguments, first will be used", Engine.Warning);
             }
 
-            return !Base.Get(arguments[0].Evaluate(context));
+            return !arguments[0].ToBool(context);
         }
     }
 }

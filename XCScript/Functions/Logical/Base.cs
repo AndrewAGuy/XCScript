@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using XCScript.Arguments;
 using XCScript.Functions.Exceptions;
 
@@ -7,26 +6,6 @@ namespace XCScript.Functions.Logical
 {
     internal static class Base
     {
-        public static bool Get(object o)
-        {
-            switch (o)
-            {
-                case bool b:
-                    return b;
-                case double d:
-                    return d != 0.0;
-                case int i:
-                    return i != 0;
-                default:
-                    var s = o.ToString();
-                    if (!bool.TryParse(s, out var v))
-                    {
-                        throw new ArgumentTypeException($"Cannot convert to bool ({o.GetType().FullName}): {s}");
-                    }
-                    return v;
-            }
-        }
-
         public static bool And(IArgument[] args, Engine context)
         {
             if (args.Length < 2)
@@ -35,7 +14,7 @@ namespace XCScript.Functions.Logical
             }
             foreach (var arg in args)
             {
-                if (!Get(arg.Evaluate(context)))
+                if (!arg.ToBool(context))
                 {
                     return false;
                 }
@@ -51,7 +30,7 @@ namespace XCScript.Functions.Logical
             }
             foreach (var arg in args)
             {
-                if (Get(arg.Evaluate(context)))
+                if (arg.ToBool(context))
                 {
                     return true;
                 }
@@ -70,8 +49,8 @@ namespace XCScript.Functions.Logical
                 context.Log($"Logical operation called with {args.Length} arguments, first 2 will be used", Engine.Warning);
             }
 
-            var b0 = Get(args[0].Evaluate(context));
-            var b1 = Get(args[1].Evaluate(context));
+            var b0 = args[0].ToBool(context);
+            var b1 = args[1].ToBool(context);
             return new Tuple<bool, bool>(b0, b1);
         }
     }

@@ -30,7 +30,7 @@ namespace XCScript.Functions.Control
                 name = arguments[2].Evaluate(context) as string;
             }
 
-            var end = Access.Index.Get(arguments[0].Evaluate(context));
+            var end = arguments[0].ToInt(context);
             object obj = null;
             for (var i = 0; i < end; ++i)
             {
