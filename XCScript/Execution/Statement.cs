@@ -6,6 +6,8 @@
 
         public int Line { get; private set; }
 
+        public abstract string Description { get; }
+
         public Statement(int line)
         {
             this.Line = line;

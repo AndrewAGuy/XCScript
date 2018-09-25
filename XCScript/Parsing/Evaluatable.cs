@@ -29,7 +29,6 @@ namespace XCScript.Parsing
         public static IArgument Function(CharSource source, ref char chr, Dictionary<string, IFunction> funcs)
         {
             // Arrive here having seen '('
-            var line = source.Line;
             if (!source.AdvanceWhiteSpace(out chr))
             {
                 throw new FinalCharacterException("Expected a function name");
@@ -50,7 +49,7 @@ namespace XCScript.Parsing
             }
             var funcArg = new FunctionArgument()
             {
-                Call = new FunctionCall(line)
+                Call = new FunctionCall(0) // Line number doesn't really matter, as this isn't a whole statement
                 {
                     Function = func
                 }

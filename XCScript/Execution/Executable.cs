@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using XCScript.Functions.Exceptions;
 
 namespace XCScript.Execution
 {
@@ -21,9 +22,20 @@ namespace XCScript.Execution
         /// <param name="context"></param>
         public void Execute(Engine context)
         {
-            foreach (var statement in statements)
+            var i = 0;
+            try
             {
-                statement.Execute(context);
+                for (; i < statements.Count; ++i)
+                {
+                    statements[i].Execute(context);
+                }
+            }
+            catch (ExecutionException e)
+            {
+                var s = statements[i];
+                e.Line = s.Line;
+                e.Description = s.Description;
+                throw;
             }
         }
 

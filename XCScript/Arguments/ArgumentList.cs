@@ -17,6 +17,14 @@ namespace XCScript.Arguments
             return args.ToArray();
         }
 
+        public int Count
+        {
+            get
+            {
+                return args.Count;
+            }
+        }
+
         public override string ToString()
         {
             var str = new StringBuilder();

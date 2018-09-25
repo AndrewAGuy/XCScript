@@ -21,5 +21,15 @@ namespace XCScript.Functions.Exceptions
         public ExecutionException(string message) : base(message)
         {
         }
+
+        /// <summary>
+        /// Attached by <see cref="XCScript.Execution.Executable"/> on intercept
+        /// </summary>
+        public int Line { get; internal set; } = 0;
+
+        /// <summary>
+        /// Attached by <see cref="XCScript.Execution.Executable"/> on intercept
+        /// </summary>
+        public string Description { get; internal set; } = "";
     }
 }

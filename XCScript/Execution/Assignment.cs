@@ -13,6 +13,14 @@ namespace XCScript.Execution
 
         public string[] Names { get; set; }
 
+        public override string Description
+        {
+            get
+            {
+                return $"Assignment: {this.Call.Function.Keyword}, {this.Call.Arguments.Count} arguments to {this.Names.Length} targets";
+            }
+        }
+
         public override void Execute(Engine context)
         {
             var res = this.Call.Evaluate(context);

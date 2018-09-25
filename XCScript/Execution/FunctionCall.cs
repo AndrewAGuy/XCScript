@@ -14,6 +14,14 @@ namespace XCScript.Execution
 
         public IFunction Function { get; set; }
 
+        public override string Description
+        {
+            get
+            {
+                return $"FunctionCall: {this.Function.Keyword}, {this.Arguments.Count} arguments";
+            }
+        }
+
         public object Evaluate(Engine context)
         {
             return this.Function.Execute(this.Arguments.Evaluate(), context);

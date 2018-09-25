@@ -13,6 +13,14 @@ namespace XCScript.Execution
         public IArgument[] From { get; set; }
         public string[] To { get; set; }
 
+        public override string Description
+        {
+            get
+            {
+                return $"Copy: {this.From.Length} arguments, {this.To.Length} targets";
+            }
+        }
+
         public override void Execute(Engine context)
         {
             var length = Math.Min(this.From.Length, this.To.Length);
