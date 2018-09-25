@@ -4,12 +4,16 @@ using XCScript.Arguments;
 
 namespace XCScript.Execution
 {
-    internal class Copy : IStatement
+    internal class Copy : Statement
     {
+        public Copy(int line) : base(line)
+        {
+        }
+
         public IArgument[] From { get; set; }
         public string[] To { get; set; }
 
-        public void Execute(Engine context)
+        public override void Execute(Engine context)
         {
             var length = Math.Min(this.From.Length, this.To.Length);
             for (var i = 0; i < length; ++i)

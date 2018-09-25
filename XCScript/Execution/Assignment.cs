@@ -3,13 +3,17 @@ using System.Text;
 
 namespace XCScript.Execution
 {
-    internal class Assignment : IStatement
+    internal class Assignment : Statement
     {
+        public Assignment(int line) : base(line)
+        {
+        }
+
         public FunctionCall Call { get; set; }
 
         public string[] Names { get; set; }
 
-        public void Execute(Engine context)
+        public override void Execute(Engine context)
         {
             var res = this.Call.Evaluate(context);
             if (res is object[] obj)

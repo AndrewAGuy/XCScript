@@ -29,6 +29,7 @@ namespace XCScript.Parsing
         public static IArgument Function(CharSource source, ref char chr, Dictionary<string, IFunction> funcs)
         {
             // Arrive here having seen '('
+            var line = source.Line;
             if (!source.AdvanceWhiteSpace(out chr))
             {
                 throw new FinalCharacterException("Expected a function name");
@@ -49,7 +50,7 @@ namespace XCScript.Parsing
             }
             var funcArg = new FunctionArgument()
             {
-                Call = new FunctionCall()
+                Call = new FunctionCall(line)
                 {
                     Function = func
                 }
@@ -125,29 +126,29 @@ namespace XCScript.Parsing
             return names;
         }
 
-        private static IStatement Copy(CharSource source, ref char chr, Dictionary<string, IFunction> funcs, IArgument[] left)
+        private static Statement Copy(CharSource source, ref char chr, Dictionary<string, IFunction> funcs, IArgument[] left, int line)
         {
             // Arrive having seen '=' from "=>"
             var names = AssignTargets(source, ref chr, funcs);
-            return new Copy()
+            return new Copy(line)
             {
                 From = left,
                 To = names
             };
         }
 
-        private static IStatement Assign(CharSource source, ref char chr, Dictionary<string, IFunction> funcs, FunctionCall call)
+        private static Statement Assign(CharSource source, ref char chr, Dictionary<string, IFunction> funcs, FunctionCall call, int line)
         {
             // Arrives on '='
             var names = AssignTargets(source, ref chr, funcs);
-            return new Assignment()
+            return new Assignment(line)
             {
                 Call = call,
                 Names = names
             };
         }
 
-        private static IStatement CallArguments(CharSource source, ref char chr, Dictionary<string, IFunction> funcs, IFunction func)
+        private static Statement CallArguments(CharSource source, ref char chr, Dictionary<string, IFunction> funcs, IFunction func, int line)
         {
             // Arrive on ':'
             if (!source.AdvanceWhiteSpace(out chr))
@@ -155,21 +156,22 @@ namespace XCScript.Parsing
                 throw new FinalCharacterException("Expected function arguments");
             }
             var args = Arguments.Multiple(source, ref chr, funcs);
-            var fcall = new FunctionCall()
+            var fcall = new FunctionCall(line)
             {
                 Function = func,
                 Arguments = args
             };
-            return chr == '=' ? Assign(source, ref chr, funcs, fcall) : fcall;
+            return chr == '=' ? Assign(source, ref chr, funcs, fcall, line) : fcall;
         }
 
-        public static IStatement Statement(CharSource source, ref char chr, Dictionary<string, IFunction> funcs)
+        public static Statement Statement(CharSource source, ref char chr, Dictionary<string, IFunction> funcs)
         {
             // Always arrive having seen a character
+            var line = source.Line;
             var left = Arguments.Multiple(source, ref chr, funcs).Evaluate();
             if (chr == '=')
             {
-                return Copy(source, ref chr, funcs, left);
+                return Copy(source, ref chr, funcs, left, line);
             }
             else
             {
@@ -190,12 +192,12 @@ namespace XCScript.Parsing
                 if (chr == ':')
                 {
                     // Call syntax: func:arg,arg=>target == (func:arg,arg)=>target
-                    return CallArguments(source, ref chr, funcs, func);
+                    return CallArguments(source, ref chr, funcs, func, line);
                 }
                 else
                 {
                     // To assign the outputs of an argumentless script to a target, use (func)=>target
-                    return new FunctionCall()
+                    return new FunctionCall(line)
                     {
                         Function = func
                     };

@@ -8,9 +8,9 @@ namespace XCScript.Execution
     /// </summary>
     public class Executable
     {
-        private List<IStatement> statements = new List<IStatement>();
+        private List<Statement> statements = new List<Statement>();
 
-        internal void Add(IStatement statement)
+        internal void Add(Statement statement)
         {
             statements.Add(statement);
         }

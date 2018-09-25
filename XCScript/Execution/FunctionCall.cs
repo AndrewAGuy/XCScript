@@ -4,8 +4,12 @@ using XCScript.Functions;
 
 namespace XCScript.Execution
 {
-    internal class FunctionCall : IStatement
+    internal class FunctionCall : Statement
     {
+        public FunctionCall(int line) : base(line)
+        {
+        }
+
         public ArgumentList Arguments { get; set; } = new ArgumentList();
 
         public IFunction Function { get; set; }
@@ -15,7 +19,7 @@ namespace XCScript.Execution
             return this.Function.Execute(this.Arguments.Evaluate(), context);
         }
 
-        public void Execute(Engine context)
+        public override void Execute(Engine context)
         {
             Evaluate(context);
         }
