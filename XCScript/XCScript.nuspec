@@ -12,7 +12,7 @@
     <description>Extensible command-driven scripting and property-based plugin management, on which CLI apps can be built.</description>
     <copyright>Copyright 2018</copyright>
     <tags>Scripting Plugins</tags>
-    <releaseNotes>More functions, more consistency</releaseNotes>
+    <releaseNotes></releaseNotes>
   </metadata>
   <files>
     <file src="../README.md" target=""/>
