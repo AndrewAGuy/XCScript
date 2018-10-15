@@ -53,6 +53,7 @@
     <Compile Include="Arguments\IArgument.cs" />
     <Compile Include="Arguments\IntegerLiteral.cs" />
     <Compile Include="Arguments\NameArgument.cs" />
+    <Compile Include="Arguments\ResultArgument.cs" />
     <Compile Include="Arguments\StringLiteral.cs" />
     <Compile Include="Arguments\TypeNameLiteral.cs" />
     <Compile Include="Functions\Access\Delete.cs" />

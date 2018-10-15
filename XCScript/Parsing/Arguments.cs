@@ -45,6 +45,8 @@ namespace XCScript.Parsing
                     return Evaluatable.Executable(source, ref chr, funcs);
                 case '/':
                     return Literals.TypeName(source, ref chr);
+                case '!':
+                    return new ResultArgument(source, ref chr);
                 default:
                     return Literals.Default(source, ref chr);
             }

@@ -89,6 +89,11 @@ namespace XCScript
         public object[] Data { get; private set; } = null;
 
         /// <summary>
+        /// The previously returned non-assigned result. Accessible in scripts using '!'
+        /// </summary>
+        public object Result { get; internal set; } = null;
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="loadAll"></param>
