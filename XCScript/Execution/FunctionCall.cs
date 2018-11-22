@@ -29,7 +29,7 @@ namespace XCScript.Execution
 
         public override void Execute(Engine context)
         {
-            context.Result = Evaluate(context);
+            context.Result = Evaluate(context) ?? context.Result;
         }
 
         public override string ToString()

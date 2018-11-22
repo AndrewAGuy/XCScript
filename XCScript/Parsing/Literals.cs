@@ -25,7 +25,7 @@ namespace XCScript.Parsing
                     throw new InvalidCharacterException($"Expected fractional value after '.': found '{chr}'");
                 }
                 var fractional = source.ReadFractional(ref chr);
-                var mantissa = integral + fractional;
+                var mantissa = integral >= 0 ? integral + fractional : integral - fractional;
 
                 if (char.ToLower(chr) == 'e')
                 {
